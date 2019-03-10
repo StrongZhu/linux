@@ -1,0 +1,54 @@
+# ========== reference : https://blog.csdn.net/i_chips/article/details/19191957
+# Ubuntu下配置支持Windows访问的samba共享
+
+# ========== install
+sudo apt-get install samba
+
+sudo apt-get install smbclient # Linux客户端测试用
+
+
+# ========== update config
+
+# backup
+sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.ori
+
+# change config
+sudo vim /etc/samba/smb.conf
+
+# append to the end of the file
+
+[homes]
+   comment = Home Directories
+   path = /home/%S/
+   browseable = yes
+   read only = no
+   create mask = 0700
+   directory mask = 0700
+   valid users = %S
+
+# ========== set user password
+sudo smbpasswd -a MY_USER1
+    # !!! it's better to set MY_USER1 same as windows account name + password !!!, 
+    # or, you must input password manually, when access samba disk from windows
+    
+
+# ========== test under linux, with smbclient
+smbclient -L localhost
+
+
+# will ask for
+Enter WORKGROUP\MY_USER1's password:
+
+# when access from windows,
+# should input 'WORKGROUP\MY_USER1' + 'password set by smbpasswd'
+
+
+
+# ========== start/stop
+sudo service smbd       start
+sudo service smbd       stop
+sudo service smbd       restart
+sudo service smbd       status
+
+
+

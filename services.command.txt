@@ -1,0 +1,26 @@
+# check status
+sudo service --status-all
+
+# check for one service
+sudo service smbd       start
+sudo service smbd       stop
+sudo service smbd       restart
+sudo service smbd       status
+
+# Usage: /etc/init.d/smbd {start|stop|reload|restart|force-reload|status}
+
+
+# ---------------
+sudo systemctl
+
+sudo systemctl    status      gogs
+
+sudo systemctl    restart     gogs
+sudo systemctl    start       gogs
+sudo systemctl    stop        gogs
+
+# enable/disable
+sudo systemctl    enable      gogs
+sudo systemctl    disable     gogs
+
+

@@ -1,0 +1,58 @@
+--------------------------------
+# https://askubuntu.com/questions/1059289/how-do-i-run-gnome-wi-fi-selection-dialog-through-terminal-with-command-line
+# will show text dialog window, to select wifi, input password 
+# nmtui - Text User Interface for controlling NetworkManager
+
+sudo nmtui
+
+
+
+
+
+--------------------------------
+--------------------------------
+--------------------------------
+# setup manually
+--------------------------------
+--------------------------------
+--------------------------------
+
+
+
+# show network link
+iwconfig
+
+ifconfig
+          # found
+          #     enp8s0: flags=......
+          #     lo: flags=......
+          #     wlp2s0: flags=......  this is wifi
+
+ip link
+
+          # found
+          #     1: lo: ......
+          #     2: enp8s0: ......
+          #     3: wlp2s0: ......     this is wifi
+          
+# !!! found 'wlp2s0' !!!
+
+# bring it up
+sudo ifconfig wlp2s0 up
+
+
+# scan ssid
+sudo iw dev wlp2s0 scan | grep -i ssid:
+sudo iwlist wlp2s0 scan | grep -i ssid:
+
+# set wifi name/password, save to file, then reset
+wpa_passphrase "dlink-xxxx" PASSWORD | sudo tee /etc/wpa_supplicant.conf
+sudo wpa_supplicant -c /etc/wpa_supplicant.conf -i wlp2s0
+
+# get IP address
+sudo dhclient wlp2s0
+sudo dhcpcd wlp2s0
+
+
+
+

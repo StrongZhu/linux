@@ -1,0 +1,6 @@
+
+# https://www.opencli.com/linux/ubuntu-16-04-change-timezone-setting
+sudo dpkg-reconfigure tzdata
+
+
+# then select in a window

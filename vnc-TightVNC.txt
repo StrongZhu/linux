@@ -1,0 +1,26 @@
+# ==========
+# ==========
+#   NOT finished, seems it's not good enough.
+# ==========
+# ==========
+
+
+# ========== reference
+# https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-18-04
+# How to Install and Configure VNC on Ubuntu 18.04
+
+
+# ========== download from web
+sudo apt update
+
+# install the Xfce desktop environment on your server:
+sudo apt install xfce4 xfce4-goodies
+
+sudo apt install tightvncserver
+
+
+
+# start
+vncserver
+# then you'll be prompted to enter and verify a password to access your machine remotely:
+

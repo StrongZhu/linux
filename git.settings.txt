@@ -1,0 +1,27 @@
+
+git config --global user.name "MY_USER1"
+git config --global user.email "MY_USER1@gmail.com"
+
+git config --global core.editor "vim"
+
+git config --global diff.tool vimdiff
+git config --global difftool.prompt false
+git config --global alias.d difftool
+
+
+# save user/password
+# https://stackoverflow.com/questions/35942754/how-to-save-username-and-password-in-git
+
+# Set git to use the credential memory cache
+git config --global credential.helper cache
+
+# By default, Git will cache your password for 15 minutes.
+# To change the default password cache timeout, enter the following:
+# Set the cache to timeout after 1 hour (setting is in seconds)
+
+git config --global credential.helper 'cache --timeout=3600'
+
+# 100 hours
+git config --global credential.helper 'cache --timeout=360000'
+
+

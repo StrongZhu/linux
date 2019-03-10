@@ -1,0 +1,55 @@
+# ------------- install -------------
+sudo apt-get update
+sudo apt-get install vsftpd
+
+
+# ------------- On SystemD -------------
+                                            sudo systemctl status vsftpd
+sudo systemctl start    vsftpd  ; sleep 1 ; sudo systemctl status vsftpd
+sudo systemctl stop     vsftpd  ; sleep 1 ; sudo systemctl status vsftpd
+sudo systemctl restart  vsftpd  ; sleep 1 ; sudo systemctl status vsftpd
+
+
+sudo systemctl enable vsftpd
+
+# ------------- On SysVInit -------------
+                                            sudo service vsftpd status
+sudo service vsftpd start       ; sleep 1 ; sudo service vsftpd status
+sudo service vsftpd stop        ; sleep 1 ; sudo service vsftpd status
+sudo service vsftpd restart     ; sleep 1 ; sudo service vsftpd status
+
+
+# ------------- update config -------------
+# make backup, then change file
+sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.ori
+sudo vim /etc/vsftpd.conf
+
+
+# ------------- config -------------
+# solve issue : 'refusing to run with writable root inside chroot'
+# for vsftpd build (vsftpd):
+allow_writeable_chroot=YES
+
+# for vsftpd build (vsftpd-ext):
+allow_writable_chroot=YES
+
+
+anonymous_enable=NO
+
+# let's enable the user to upload files
+write_enable=YES
+
+# uncomment the chroot to prevent the FTP-connected user from accessing any files or commands outside the directory tree:
+# maybe it's not important
+chroot_local_user=YES
+
+local_umask=022
+
+
+
+# ------------- more details -------------
+https://www.digitalocean.com/community/tutorials/how-to-set-up-vsftpd-for-a-user-s-directory-on-ubuntu-18-04
+
+
+
+

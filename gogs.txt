@@ -1,0 +1,88 @@
+# =========== prerequisites
+* sqlite3
+* git
+* ssh
+
+# =========== install
+
+# https://gogs.io/docs/installation/install_from_binary
+# ubuntu    -->   Linux   amd64     
+
+# === download
+wget https://dl.gogs.io/0.11.86/gogs_0.11.86_linux_amd64.tar.gz
+
+# === unzip
+tar zxf gogs_0.11.86_linux_amd64.tar.gz
+
+# === start process
+
+cd gogs     # i.e. /home/MY_USER1/gogs
+./gogs web
+
+
+# === go on setup from browser
+http://localhost:3000
+http://xxx.xxx.xxx.xxx:3000
+
+Database Type           : SQLite3
+Path                    : !!! use absolute path when you start as service. !!! 
+                          !!! if start from command line, will generate file like : /home/MY_USER1/gogs/data/gogs.db
+
+Repository Root Path    : /home/MY_USER1/gogs-repositories
+
+Run User                : git   # run this process by this user, e.g. change to 'MY_USER1'
+                          The user must have access to Repository Root Path and run Gogs.
+                          
+                          
+Domain                  : xxx.xxx.xxx.xxx
+                          This affects SSH clone URLs.
+
+HTTP Port               : 3000
+                          Port number which application will listen on.
+
+# can create a 'admin account' now
+
+
+# =========== update config, later, reference : https://gogs.io/docs/advanced/configuration_cheat_sheet
+/home/MY_USER1/gogs/custom/conf/app.ini
+
+# =========== fix bug in script
+for ubuntu, must update script :
+/home/MY_USER1/gogs/scripts/init/debian/gogs
+
+
+      # PATH should only include /usr/* if it runs after the mountnfs.sh script
+      PATH=/sbin:/usr/sbin:/bin:/usr/bin
+      DESC="Gogs"
+      NAME=gogs
+      SERVICEVERBOSE=yes
+      PIDFILE=/var/run/$NAME.pid
+      SCRIPTNAME=/etc/init.d/$NAME
+WORKINGDIR=/home/MY_USER1/gogs      # !!! change in here !!!
+      DAEMON=$WORKINGDIR/$NAME
+      DAEMON_ARGS="web"
+USER=MY_USER1                       # !!! change in here !!!
+
+
+
+
+# =========== !!! NOT tested !!! install as service, 
+# , reference : https://computingforgeeks.com/how-to-install-gogs-self-hosted-git-service-on-ubuntu-18-04-ubuntu-16-04/
+
+# change 'git' to 'MY_USER1', in file scripts/systemd/gogs.service
+
+sudo cp scripts/systemd/gogs.service    /etc/systemd/system
+
+# reload
+sudo    systemctl daemon-reload
+
+
+sudo    service gogs       start
+sudo    service gogs       stop
+sudo    service gogs       restart
+
+sudo    service gogs       status
+
+
+
+

@@ -1,0 +1,14 @@
+# install
+sudo apt-get install openssh-server
+
+
+# check status
+sudo service ssh status
+
+# restart
+sudo service ssh status
+
+
+# config file
+sudo vim /etc/ssh/sshd_config
+

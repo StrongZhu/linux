@@ -1,0 +1,38 @@
+
+
+# on startup, there is no LAN, just wifi
+# found error 'a start job is running for wait for network to be configured'
+# and KEEP WAITING...
+
+# connect to LAN, it get IP or whatever, it can go on startup
+
+# ---------------
+# solution 1 : reference : https://askubuntu.com/questions/972215/a-start-job-is-running-for-wait-for-network-to-be-configured-ubuntu-server-17-1
+# find all files like
+#     /etc/netplan/01-netcfg.yaml
+#     /etc/netplan/50-cloud-init.yaml
+#
+# add
+#     optional: true
+# to any devices that may not always be available.
+#
+#
+# run
+sudo netplan apply
+
+#
+# then restart, it works.
+
+# ---------------
+# solution 2
+#
+# disable the wait-online service to prevent the system from waiting on a network connection
+systemctl disable systemd-networkd-wait-online.service
+#
+# prevent the service from starting if requested by another service (the service is symlinked to /dev/null).
+systemctl mask systemd-networkd-wait-online.service
+
+
+
+
+
