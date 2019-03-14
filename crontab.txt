@@ -1,0 +1,82 @@
+
+# list
+crontab  -l
+crontab -u username -l
+
+# edit
+crontab  -e
+crontab -u username -e
+
+
+# sample
+# https://tecadmin.net/crontab-in-linux-with-20-examples-of-cron-schedule/
+
+# on system reboot ( @reboot 
+@reboot /scripts/script.sh
+
+# every 30 Seconds ( by 2 jobs)
+* * * * * /scripts/script.sh
+* * * * *  sleep 30; /scripts/script.sh
+
+# every minute
+* * * * * /path/to/your/script
+
+# every  the 5th minute of the hour
+5 * * * * /home/aspera/my_script.sh
+
+# every 5 minutes
+*/5 * * * * /home/aspera/my_script.sh
+0,5,10,15,20,25,30,35,40,45,50,55 * * * * /home/aspera/my_script.sh
+
+# every minute
+* * * * *  /scripts/script.sh
+
+# execute at 02:00 AM, everyday
+0 2 * * * /bin/sh backup.sh
+
+# twice(5 AM and 5 PM) a day
+0 5,17 * * * /scripts/script.sh
+
+# every Sunday at 5 PM
+0 17 * * sun  /scripts/script.sh
+
+# selected months.
+* * * jan,may,aug *  /script/script.sh
+
+# selected days.
+0 17 * * sun,fri  /script/script.sh
+
+
+# run multiple commands
+* * * * * /scripts/script.sh; /scripts/scrit2.sh
+* * * * * "$(command -v bash)" -c 'source activate myenv3 && cd ~/foo/bar && python sssb.py'
+
+# yearly, monthly, weekly, daily, hourly
+@yearly /scripts/script.sh
+@monthly /scripts/script.sh
+@weekly /bin/script.sh
+@daily /scripts/script.sh
+@hourly /scripts/script.sh
+
+
+
+
+# Redirect Cron Results to specified email account.
+# crontab -l
+MAIL=bob
+0 2 * * * /script/backup.sh
+
+
+# Backup cron to text file:
+crontab -l > cron-backup.txt
+cat cron-backup.txt
+
+#Restore crons from text file:
+crontab cron-backup.txt
+
+
+
+# remove all jobs
+crontab -r
+
+

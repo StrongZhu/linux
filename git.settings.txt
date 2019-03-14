@@ -1,18 +1,40 @@
-
+# ------------------------------------------
 git config --global user.name "MY_USER1"
 git config --global user.email "MY_USER1@gmail.com"
 
+# ------------------------------------------
 git config --global core.editor "vim"
 
 git config --global diff.tool vimdiff
 git config --global difftool.prompt false
 git config --global alias.d difftool
 
+# ------------------------------------------
+# git tags
+git tag                       # list tag
+git tag -l 'v1.4.2.*'         # list tag
 
+git checkout _MY_TAG1_        # checkout tag
+
+git tag _MY_TAG1_             # add tag (local)
+
+git show _MY_TAG1_            # show tag info
+
+git push origin --tags        # put all local tag to remote
+
+git tag -d _MY_TAG1_                    # delete tag (local)
+git push origin :refs/tags/_MY_TAG1_    # delete tag (remote)
+
+
+# ------------------------------------------
+# branch
+# TODO
+
+# ------------------------------------------
 # save user/password
 # https://stackoverflow.com/questions/35942754/how-to-save-username-and-password-in-git
-
 # Set git to use the credential memory cache
+
 git config --global credential.helper cache
 
 # By default, Git will cache your password for 15 minutes.
@@ -24,4 +46,78 @@ git config --global credential.helper 'cache --timeout=3600'
 # 100 hours
 git config --global credential.helper 'cache --timeout=360000'
 
+# ------------------------------------------
+# CR and LF
+#   windows use     CRLF
+#   linux/mac use   LF
 
+# checkout : LF       ->    CRLF
+# checkin  : CRLF     ->    LF
+git config --global core.autocrlf true
+
+# e.g. for linux/mac
+# checkout : nothing
+# checkin  : CRLF     ->    LF
+git config --global core.autocrlf input
+
+# e.g. for windows
+# checkout : nothing
+# checkin  : nothing
+git config --global core.autocrlf false
+
+
+# ------------------------------------------
+# submodule
+
+# #### create mainProj + subProj
+
+# create a mainProj
+cd mainProj
+
+# add submodules
+git submodule add https://github.com/aaaaa/projXXX.git
+git submodule add https://github.com/aaaaa/projYYY.git
+
+# will add sub-dir : projXXX, projYYY
+
+# and generate new file:  .getmodules
+
+# add and commit
+git add .getmodules projXXX projYYY
+git commit -m "add submodule : projXXX projYYY "
+git submodule init
+
+# now, it's ok to init submodule
+
+
+# always use 'master' of submodule
+# edit file '.gitmodules'
+
+    [submodule "pythonFinanceLib"]
+            path = projXXX
+            url = http://000.000.000.000/aaa/bbb/projXXX.git
+            branch = master                               <--- add this line
+# add and commit            
+
+# #### clone mainProj + subProj
+
+# simple version
+git clone --recursive https://github.com/aaaaa/mainProj.git
+
+# comple version
+git submodule clone https://github.com/aaaaa/mainProj.git
+cd mainProj
+
+git submodule init
+
+git submodule update    # in this step, all files in submodule proj will be checkout. but NOT in 'master'
+
+# ----
+# pull all submodules   ( e.g. update all submodule in 'mainProj',  to get all change made in other proj 'mainProjother')
+# in mainProj root folder
+git submodule foreach git pull
+
+
+
+# ------------------------------------------
+# TODO

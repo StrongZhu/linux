@@ -27,34 +27,45 @@ fi
 UNAME=`uname`
 # echo $UNAME
 
+#       windows32           # windows 7 cmd shell
+#       MINGW64_NT-6.1      # git bash on windows
+#       Linux               # ubuntu
+
+
 # MacOS
 if [ $UNAME == "Darwin" ];
 then
   export GREP_COLOR="1;37;41"
 
   export GREP_PARAM="-E"
-  alias G='grep --color -E'
-  alias g='grep --color -i -E'
-  alias Gs='find -type f | xargs grep --color -r -E'
-  alias gs='find -type f | xargs grep --color -r -i -E'
-  alias Gsf='find -type f -follow | xargs grep --color -r -E'
-  alias gsf='find -type f -follow | xargs grep --color -r -i -E'
-  alias psg='ps -ef | grep -i --color -E'
-  alias no='grep "/\.git/" -v -E'
+  alias G='grep -a --color -E'
+  alias g='grep -a --color -i -E'
+  alias Gs='find -type f | xargs grep -a --color -r -E'
+  alias gs='find -type f | xargs grep -a --color -r -i -E'
+  alias Gsf='find -type f -follow | xargs grep -a --color -r -E'
+  alias gsf='find -type f -follow | xargs grep -a --color -r -i -E'
+  alias psg='ps -ef | grep -a -i --color -E'
+  alias no='grep -a "/\.git/" -v -E'
+
+  echo "UNAME=$UNAME : Darwin"
+
 fi
 
 # Linux
-if [ $UNAME == "Linux" ];
+if [ $UNAME == "Linux" ] || [ $UNAME == "MINGW64_NT-6.1" ];
 then
   export GREP_PARAM="-P"
-  alias G='grep --color -P'
-  alias g='grep --color -i -P'
-  alias Gs='find -type f | xargs grep --color -r -P'
-  alias gs='find -type f | xargs grep --color -r -i -P'
-  alias Gsf='find -type f -follow | xargs grep --color -r -P'
-  alias gsf='find -type f -follow | xargs grep --color -r -i -P'
-  alias psg='ps -ef | grep -i --color -P'
-  alias no='grep "/\.git/" -v -P'
+  alias G='grep -a --color -P'
+  alias g='grep -a --color -i -P'
+  alias Gs='find -type f | xargs grep -a --color -r -P'
+  alias gs='find -type f | xargs grep -a --color -r -i -P'
+  alias Gsf='find -type f -follow | xargs grep -a --color -r -P'
+  alias gsf='find -type f -follow | xargs grep -a --color -r -i -P'
+  alias psg='ps -ef | grep -a -i --color -P'
+  alias no='grep -a "/\.git/" -v -P'
+
+  echo "UNAME=$UNAME : Linux/MINGW64_NT-6.1"
+
 fi
 
 # ===================================================
@@ -158,7 +169,7 @@ function dird() { if [ $# -ne 2 ]
   then
     echo "ERROR : must provide 2 parameters"
   else
-    diff -qr $1 $2 | sort | grep "/CVS: |/CVS/|/\.git/" $GREP_PARAM -v | sed "s/^Files \(.\+\) and \(.\+\) differ$/vimdiff \1 \2/" | sed "s/^Only in \(.\+\): \(.\+\)$/\1\/\2 # single/"
+    diff -qr $1 $2 | sort | grep -a "/CVS: |/CVS/|/\.git/" $GREP_PARAM -v | sed "s/^Files \(.\+\) and \(.\+\) differ$/vimdiff \1 \2/" | sed "s/^Only in \(.\+\): \(.\+\)$/\1\/\2 # single/"
   fi
 }
 
@@ -236,4 +247,5 @@ bind '"\e[1;3C": forward-word'  ### Alt right
 # rm -rf /System/Library/Caches/*
 
 
+alias logless='ls log*201*.log | tail -1 | xargs less -i -f -R'
 
