@@ -1,0 +1,1 @@
+tr '\001' ';' | /c/Python27/python ~/fixcut.py  $*
