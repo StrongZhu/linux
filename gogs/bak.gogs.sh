@@ -1,4 +1,4 @@
-export LOG_FILE=gogs.bak.log
+export LOG_FILE=bak.gogs.sh.log
 
 # MUST set this, to solve issie : [FATAL] [...g/setting/setting.go:591 NewContext()] Expect user 'MY_USER1' but current user is:
 # either set in here, or set in crontab job
@@ -12,11 +12,19 @@ export LOG_FILE=gogs.bak.log
 cd ~/gogs
 
 echo '====================' >>  $LOG_FILE
+echo '=== BEGIN ==========' >>  $LOG_FILE
+echo '====================' >>  $LOG_FILE
+
+echo '====================' >>  $LOG_FILE
 date +'%Y%M%d_%H%m%S'       >>  $LOG_FILE
 echo '====================' >>  $LOG_FILE
 
 echo 'pwd'                  >>  $LOG_FILE
 pwd                         >>  $LOG_FILE
+echo '--------------------' >>  $LOG_FILE
+
+echo 'whoami'               >>  $LOG_FILE
+whoami                      >>  $LOG_FILE
 echo '--------------------' >>  $LOG_FILE
 
 ./gogs backup               >>  $LOG_FILE

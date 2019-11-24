@@ -52,7 +52,30 @@ then
 fi
 
 # Linux
-if [ $UNAME == "Linux" ] || [ $UNAME == "MINGW64_NT-6.1" ];
+
+# OLD :
+#
+# if [ $UNAME == "Linux" ] || [ $UNAME == "MINGW64_NT-6.1" ];
+
+# NEW :
+#
+# reference : https://stackoverflow.com/questions/2172352/in-bash-how-can-i-check-if-a-string-begins-with-some-value
+#
+# # The == comparison operator behaves differently within a double-brackets
+# # test than within single brackets.
+# [[ $a == z* ]]   # True if $a starts with a "z" (wildcard matching).
+# [[ $a == "z*" ]] # True if $a is equal to z* (literal matching).
+#
+# more (need bash v3+)
+# if [[ "$HOST" =~ ^user.* ]]; then
+#   echo "yes"
+# fi
+#
+# if [[ "$HOST" =~ ^user.*|^host1 ]]; then
+#   echo "yes"
+# fi
+#
+if [ $UNAME == "Linux" ] || [[ $UNAME == MINGW* ]];
 then
   export GREP_PARAM="-P"
   alias G='grep -a --color -P'
