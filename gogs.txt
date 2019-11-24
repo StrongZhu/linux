@@ -63,6 +63,9 @@ WORKINGDIR=/home/MY_USER1/gogs      # !!! change in here !!!
       DAEMON_ARGS="web"
 USER=MY_USER1                       # !!! change in here !!!
 
+# ========== install to crontab
+@reboot whoami >> /tmp/whoami.log ; date >> /tmp/whoami.log ; echo _________________ >> /tmp/whoami.log
+@reboot export USER=zhuqiang ; bash /home/zhuqiang/gogs/start.gogs.sh >> /home/zhuqiang/gogs/start.gogs.sh...log
 
 
 
