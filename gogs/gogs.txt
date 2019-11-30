@@ -69,6 +69,32 @@ USER=MY_USER1                       # !!! change in here !!!
 
 
 
+
+
+
+
+
+
+# === when migrate the db, maybe MUST update some hook manually
+# or, will get error when run 'git push'
+#     remote: hooks/pre-receive: line 2: /home/zhuqiang/gogs/gogs: No such file or directory
+#     To http://pi:3000/qqq/finance_proj.git
+#      ! [remote rejected] master -> master (pre-receive hook declined)
+#     error: failed to push some refs to 'http://pi:3000/qqq/finance_proj.git'
+#
+# change file like:
+change '/home/XXX/gogs/gogs' to '/home/YYY/gogs/gogs'
+
+/home/pi/gogs-repositories/qqq/pythoncommonlib.git/hooks/post-receive:"/home/pi/gogs/gogs" hook --config='/home/pi/gogs/custom/conf/app.ini' post-receive
+/home/pi/gogs-repositories/qqq/pythoncommonlib.git/hooks/pre-receive:"/home/pi/gogs/gogs" hook --config='/home/pi/gogs/custom/conf/app.ini' pre-receive
+/home/pi/gogs-repositories/qqq/pythoncommonlib.git/hooks/update:"/home/pi/gogs/gogs" hook --config='/home/pi/gogs/custom/conf/app.ini' update $1 $2 $3
+/home/pi/gogs-repositories/qqq/pythonfinancelib.git/hooks/post-receive:"/home/pi/gogs/gogs" hook --config='/home/pi/gogs/custom/conf/app.ini' post-receive
+/home/pi/gogs-repositories/qqq/pythonfinancelib.git/hooks/pre-receive:"/home/pi/gogs/gogs" hook --config='/home/pi/gogs/custom/conf/app.ini' pre-receive
+
+
+
+
+
 # =========== !!! NOT tested !!! install as service, 
 # , reference : https://computingforgeeks.com/how-to-install-gogs-self-hosted-git-service-on-ubuntu-18-04-ubuntu-16-04/
 

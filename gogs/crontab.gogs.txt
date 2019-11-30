@@ -1,4 +1,5 @@
 
+# !!! must spefici USER !!!
 
 
 # start on reboot, must setup USER, as it's empty by default, on startup
@@ -6,7 +7,12 @@
 
 
 # 01:00, everyday
-0 1 * * *  /home/pi/shadow1/linux/gogs/bak.gogs.sh >> /home/pi/shadow1/linux/gogs/bak.gogs.sh...crontab.log
+0 1 * * *  export USER=pi ; /home/pi/shadow1/linux/gogs/bak.gogs.sh >> /home/pi/gogs/bak.gogs.sh...crontab.log
 
+# every minute
+# * * * * *  export USER=pi ; /home/pi/shadow1/linux/gogs/bak.gogs.sh >> /home/pi/gogs/bak.gogs.sh...crontab.log
+
+# every 10 minute
+# */10 * * * *  export USER=pi ; /home/pi/shadow1/linux/gogs/bak.gogs.sh >> /home/pi/gogs/bak.gogs.sh...crontab.log
 
 

@@ -1,0 +1,398 @@
+
+## -------------------------
+## byobu : wrapper of screen ?
+
+## tmux : simuliar to screen
+##    http://www.dayid.org/os/notes/tm.html
+
+## -------------------------
+# Don't display the copyright page
+startup_message off
+
+# tab-completion flash in heading bar
+vbell off
+
+# keep scrollback n lines
+defscrollback 10000
+defscrollback 10000
+
+
+
+
+## -------------------------
+# !!! disabled for better performance !!!
+# backtick 1 1200 1200 whoami
+
+# https://superuser.com/questions/594753/gnu-screen-run-arbitrary-command-in-the-status-bar
+# add
+#     backtick 1 0 5 /bin/date
+#     !!! it means backtick id 1, 
+#     !!! which runs command /bin/date, 
+#     !!! produces output valid for 0 seconds 
+#     !!! and the caption/hardstatus should be updated every 5 seconds.
+#
+# or
+#     backtick 1 0 60 $HOME/my_script.sh
+# then can use
+#     hardstatus alwayslastline "who|wc -l output: %1`"
+#                                                  ~~~
+
+
+# 'Mem' + 'Swap' = 'Total'
+# just show 'Mem'
+
+# !!! disabled for better performance !!!
+# free Mem
+# backtick 2  10   10   sh -c 'free -h | sed "s/ \+/,/g" | grep Mem: | tr , "\n" | head -4 | tail -1 '
+# total Mem
+# backtick 3  10   10   sh -c 'free -h | sed "s/ \+/,/g" | grep Mem: | tr , "\n" | head -2 | tail -1 '
+
+
+# datetime
+# backtick 4  1   1   date +"%Y-%m-%d %H:%M:%S"
+backtick 4  1   1   date +"%H:%M:%S"
+
+
+# caption title on bottom
+caption always
+
+# caption string "%w"
+# caption always "%c | %-Lw%{= BW}%50>%n* %t%{-}%+Lw%<"
+# caption always "%-Lw%{= BW}%50>%n%f* %t%{-}%+Lw< %{=b BW} %H %{-} %l %Y-%m-%d %c"
+# caption always "%{b kw}%H %{r}%1` %{w}| %{g}%c %{w}| %{y}%d.%m.%Y %{w}| %{g}%l %{w}| %{-b kw}%u %-Lw%{= rW}%50> %n%f %t %{-}%+Lw%<"
+
+# good
+# caption always '%{= G}[%= %{= w}%?%-Lw%?%{= R}%n[*%f %t]%?%{= R}(%u)%?%{= w}%+Lw%?%= %{= g}][%{y}Load:%l%{g}][%{B}%C:%s %A%{g}]'
+
+# # !!! might impact performance !!!
+#   !!! need 'backtick 1/2/3/4' above
+# caption always '%{= G}[%{= w}%?%-Lw%?%{= R}%n[*%f %t]%?%{= R}(%u)%?%{= w}%+Lw%? %{= g}]%=[%2`/%3`][%{y}Load:%l%{g}][%{B}%4`%{g}]'
+
+# !!! light weight !!!
+caption always '%{= G}[%{= w}%?%-Lw%?%{= R}%n[*%f %t]%?%{= R}(%u)%?%{= w}%+Lw%? %{= g}]%=[%{B}%4`%{g}]'
+
+#     %=  : pad the string to the display’s width
+
+# ------------------------------------------
+#       https://www.gnu.org/software/screen/manual/html_node/String-Escapes.html#String-Escapes
+#
+#
+#       21 String Escapes
+#       Screen provides an escape mechanism to insert information like the current time into messages or file names. The escape character is % with one exception: inside of a window’s hardstatus ^% (^E) is used instead.
+#       Here is the full list of supported escapes:
+#       %   the escape character itself
+#       a   either am or pm
+#       A   either AM or PM
+#       c   current time HH:MM in 24h format
+#       C   current time HH:MM in 12h format
+#       d   day number
+#       D   weekday name
+#       E   sets %? to true if the escape character has been pressed.
+#       f   flags of the window. See Windows, for meanings of the various flags.
+#       F   sets %? to true if the window has the focus
+#       h   hardstatus of the window
+#       H   hostname of the system
+#       l   current load of the system
+#       m   month number
+#       M   month name
+#       n   window number
+#       P   sets %? to true if the current region is in copy/paste mode
+#       s   seconds
+#       S   session name
+#       t   window title
+#       u   all other users on this window
+#       w   all window numbers and names. With - qualifier: up to the current window; with + qualifier: starting with the window after the current one.
+#       W   all window numbers and names except the current one
+#       y   last two digits of the year number
+#       Y   full year number
+#       ?   the part to the next %? is displayed only if a % escape inside the part expands to a non-empty string
+#       :   else part of %?
+#       =   pad the string to the display’s width (like TeX’s hfill). If a number is specified, pad to the percentage of the window’s width. A 0 qualifier tells screen to treat the number as absolute position. You can specify to pad relative to the last absolute pad position by adding a + qualifier or to pad relative to the right margin by using -. The padding truncates the string if the specified position lies before the current position. Add the L qualifier to change this.
+#       <   same as %= but just do truncation, do not fill with spaces
+#       >   mark the current text position for the next truncation. When screen needs to do truncation, it tries to do it in a way that the marked position gets moved to the specified percentage of the output area. (The area starts from the last absolute pad position and ends with the position specified by the truncation operator.) The L qualifier tells screen to mark the truncated parts with ‘...’.
+#       {   attribute/color modifier string terminated by the next }
+#       `   Substitute with the output of a ‘backtick’ command. The length qualifier is misused to identify one of the commands. See Backtick.
+#
+#
+#         backtick    id    lifespan    autorefresh     command [args]
+#         Program the backtick command with the !!! numerical id !!!. 
+#         The output of such a command is used for substitution of the %` string escape (see String Escapes). 
+#
+#         The specified lifespan is !!! the number of seconds !!! the output is considered valid. 
+#         After this time, the command is run again if a corresponding string escape is encountered. 
+#
+#         The autorefresh parameter triggers an automatic refresh for caption and hardstatus strings after the specified number of seconds. 
+#         Only !!! the last line !!! of output is used for substitution.
+#
+#         If both the lifespan and the autorefresh parameters are zero, the backtick program is expected to stay in the background and generate output once in a while. In this case, the command is executed right away and screen stores the last line of output. If a new line gets printed screen will automatically refresh the hardstatus or the captions.
+#
+#
+#
+
+#       
+#           The c and C escape may be qualified with a 0 to make screen use zero instead of space as fill character. The n and = escapes understand a length qualifier (e.g. %3n), D and M can be prefixed with L to generate long names, w and W also show the window flags if L is given.
+#       An attribute/color modifier is is used to change the attributes or the color settings. Its format is ‘[attribute modifier] [color description]’. The attribute modifier must be prefixed by a change type indicator if it can be confused with a color description. The following change types are known:
+#       
+#       +   add the specified set to the current attributes
+#       -   remove the set from the current attributes
+#       !   invert the set in the current attributes
+#       =   change the current attributes to the specified set
+#       
+#       The attribute set can either be specified as a hexadecimal number or a combination of the following letters:
+#       d   dim
+#       u   underline
+#       b   bold
+#       r   reverse
+#       s   standout
+#       B   blinking
+#       
+#       Colors are coded either as a hexadecimal number or two letters specifying the desired background and foreground color (in that order). The following colors are known:
+#       k   black
+#       r   red
+#       g   green
+#       y   yellow
+#       b   blue
+#       m   magenta
+#       c   cyan
+#       w   white
+#       d   default color
+#       .   leave color unchanged
+#       
+#       The capitalized versions of the letter specify bright colors. You can also use the pseudo-color ‘i’ to set just the brightness and leave the color unchanged.
+#       
+#       A one digit/letter color description is treated as foreground or background color dependent on the current attributes: if reverse mode is set, the background color is changed instead of the foreground color. If you don’t like this, prefix the color with a ‘.’. If you want the same behavior for two-letter color descriptions, also prefix them with a ‘.’.
+#       
+#       As a special case, ‘%{-}’ restores the attributes and colors that were set before the last change was made (i.e. pops one level of the color-change stack).
+#       
+#       Examples:
+#       ‘G’   set color to bright green
+#       ‘+b r’  use bold red
+#       ‘= yd’  clear all attributes, write in default color on yellow background.
+#       ‘%-Lw%{= BW}%50>%n%f* %t%{-}%+Lw%<’     The available windows centered at the current win dow and truncated to the available width. The current window is displayed white on blue. This can be used with ‘hardstatus alwayslastline’.
+#       
+#       ‘%?%F%{.R.}%?%3n %t%? [%h]%?’           The window number and title and the window’s hardstatus, if one is set. Also use a red background if this is the active focus. Useful for ‘caption string’.
+#       
+#       
+# ------------------------------------------
+
+
+
+
+
+# Doesn't fix scrollback problem on xterm because if you scroll back
+# all you see is the other terminals history.
+# termcapinfo xterm|xterms|xs|rxvt ti@:te@
+
+# bind key
+## http://web.mit.edu/gnu/doc/html/screen_13.html#SEC82
+## http://aperiodic.net/screen/commands:bindkey
+
+# bindkey ^[, prev        # Alt+,  prev tab
+# bindkey ^[. next        # Alt+.  next tab
+
+# bindkey ^[[1;3D prev      # Alt + left 
+# bindkey ^[[1;3C next      # Alt + right 
+
+# ==========================================
+# for testing
+# -----------------------
+# several way to show key code
+#    showkey -a
+#    read
+#    cat
+#
+# command 'read', then press 'Left', (space), 'Ctrl+Left', (space), 'Alt+Left'
+# ubuntu 14
+#   ^[[D    ^[[1;5D     ^[[1;3D
+#
+# windows putty
+#   ^[[D    ^[OD    ^[^[[D
+#
+# ==========================================
+
+
+# ==========================================
+# for "windows, putty" and "ubuntu, bash"
+# -----------------------
+bindkey "^[," prev          # ALt+,
+bindkey "^[." next          # ALt+.
+bindkey "^[/" windowlist    # Alt+/
+# ==========================================
+
+# ==========================================
+# windows, putty
+# -----------------------
+bindkey ^[[D prev           # Ctrl + left
+bindkey ^[[C next           # Ctrl + right
+bindkey ^[[A windowlist     # Ctrl + up
+bindkey ^[[B other          # Ctrl + down
+
+bindkey "^[^[[23~" prev     # Alt+F11
+bindkey "^[^[[24~" next     # Alt+F12
+
+# no key for "tab 0"
+# F1 to F12, tab 1 to 12
+bindkey "^[[11~" select 1
+bindkey "^[[12~" select 2
+bindkey "^[[13~" select 3
+bindkey "^[[14~" select 4
+bindkey "^[[15~" select 5
+bindkey "^[[17~" select 6
+bindkey "^[[18~" select 7
+bindkey "^[[19~" select 8
+bindkey "^[[20~" select 9
+bindkey "^[[21~" select 10
+bindkey "^[[23~" select 11
+# NO    "^[[22~"
+bindkey "^[[24~" select 12
+# ==========================================
+
+
+# ==========================================
+# ubnutn 14 terminal, bash
+# -----------------------
+bindkey ^[[1;5D prev        # Ctrl + left 
+bindkey ^[[1;5C next        # Ctrl + right 
+bindkey ^[[1;5A windowlist  # Ctrl + up
+bindkey ^[[1;5B other       # Ctrl + up
+
+bindkey -k k1 select 1    # Make the "F1" key switch to tab 1
+bindkey -k k2 select 2    # and so on
+bindkey -k k3 select 3
+bindkey -k k4 select 4
+bindkey -k k5 select 5
+bindkey -k k6 select 6
+bindkey -k k7 select 7
+bindkey -k k8 select 8
+bindkey -k k9 select 9
+
+# ==========================================
+
+
+## Ctrl-A + '               : input window num to jump to
+## Ctrl-A + "(shift+')      : show window list
+
+
+## Ctrl-A + ?               : show screen key binds
+## Ctrl-A + p               : prev window
+## Ctrl-A + n               : next window
+## Ctrl-A + Ctrl-A          : just to last window
+
+## Ctrl-A + S               : split horizontally
+## Ctrl-A + |               : split vertifally, (need screen > 4.1)
+## Ctrl-A + X               : remove region
+## Ctrl-A + Tab             : move to next region
+
+
+## 'lastwindow', 'last' does NOT work
+#bindkey ^[[1;5B lastwindow  # Ctrl + down
+
+# bindkey -k k8 prev        # F8  prev tab
+# bindkey -k k9 next        # F9  next tab
+
+
+
+## failed in ubuntu, bash
+# control-left and control-right switch windows
+# bindkey "^[[5D" prev
+# bindkey "^[[5C" next
+# bindkey ^[[D prev        # Alt+Left  prev tab
+# bindkey ^[[C prev        # Alt+Right next tab
+
+
+## -------------------------
+## misc
+# Make `foo' an abrevation of the word `barfoo'. Timeout is disabled so that users can type slowly.
+# bindkey -t foo stuff barfoo     # input 'foo', will show 'barfoo'
+
+# F2 enters copy mode
+# bindkey -k k2 copy
+
+## -------------------------
+## open tab
+## screen [-t <subuect>] [<command>]
+screen -t . bash --init-file ~/pro
+screen -t . bash --init-file ~/pro
+screen -t . bash --init-file ~/pro
+screen -t . bash --init-file ~/pro
+screen -t . bash --init-file ~/pro
+# screen
+# screen -t A bash --init-file ~/pro
+# screen -t B bash --init-file ~/pro
+# screen -t C bash --init-file ~/pro
+# screen -t D bash --init-file ~/pro
+# screen -t E bash --init-file ~/pro
+## select tab 0
+select 0
+
+## fit size
+fit
+
+
+# don't pause for each screen message
+msgminwait 0
+msgwait 0
+
+# 256 color support, from ~sledbetter/.screenrc at work
+# termcapinfo rxvt 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm:hs:ts=\E]0;:fs=\007:ds=\E]0;\007'
+# termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm:hs:ts=\E]0;:fs=\007:ds=\E]0;\007'
+# termcapinfo xterm*|Eterm|mlterm|rxvt 'hs:ts=\E]0;:fs=\007:ds=\E]0;screen\007'
+# termcapinfo rxvt-unicode ti@:te@     #enable SHIFT-PGUP / SHIFT-PGDOWN scroll
+# termcapinfo wy* CS=\E[?1h:CE=\E[?1l:vi=\E[?25l:ve=\E[?25h:VR=\E[?5h:VN=\E[?5l:cb=\E[1K:CD=\E[1J
+# termcapinfo  * '' 'hs:ts=\E_:fs=\E\\:ds=\E_\E\\'
+
+
+## make search case-insensitive
+ignorecase on
+
+
+# shelltitle "$ |bash"
+
+## An alternative hardstatus to display a bar at the bottom listing the
+## windownames and highlighting the current windowname in blue. (This is only
+## enabled if there is no hardstatus setting for your terminal)
+# hardstatus on
+# hardstatus alwayslastline
+
+# hardstatus string "%w"
+# hardstatus string "%{.kW}%-w%{.W}%n %t%{-}%{=b kw}%?%+w%?"            #B&W
+# hardstatus string "%{.kW}%-w%{.W}%n %t%{-}%{=b kw}%?%+w%? %=%c %d/%m/%Y" #B&W & date&time
+# hardstatus string "%{.kW}%-w%{.W}%n %t%{-}%{=b kw}%?%+w%? %=%c %d/%m/%Y" #B&W & date&time
+# hardstatus string '%{= R}[%{w}%H%{R}][%{w}%=%?%-Lw%?%{R}%n*%f%t%?(%u)%? %{w}%?%+Lw%?%?%=%{R}][%{w}%m/%d %{W}%C%A%{R}]'
+# hardstatus string "%{.kW}%-w%{.W}%n %t%{-}%+w %=%C %a "
+# hardstatus string "%{=b kw} %?%-Lw%?%{=br kw}[%n %t]%{=b kw}%?%+Lw%? %="
+# hardstatus alwayslastline '%{bk}[ %{W}%H %{b}][ %{w}%l%{b} ]   %{b}[%{w} %D %d.%m %c:%s%{b} ]'
+# hardstatus alwayslastline '%{bk}[%{W}%H%{b}] %{w} %l %= %n*%t%{-b r}%{w}%+w %= %{w}%d %D %{w}%c'
+# hardstatus alwayslastline '%{wk}[ %{g}][%= %{wk}%?%-Lw%?%{=b kR}(%{W}%n*%f %t%?(%u)%?%{=b kR})%{= kw}%?%+Lw%?%?%= %{g}][%{Y}%l%{g}]%{=b C}[ %m/%d %c ]%{W}'
+# hardstatus string '%{= mK}%-Lw%{= KW}%50>%n%f* %t%{= mK}%+Lw%< %{= kG}%-=%D %d %M %Y %c:%s%{-}'
+# hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+
+# unsetenv SSH_AUTH_SOCK
+ #setenv SSH_AUTH_SOCK /home/$USER/.ssh/agent-screen-socket
+
+
+#terminfo rxvt-unicode ti@:te@:
+
+#term screen-256color
+
+#setenv LC_CTYPE en_US.UTF-8
+
+#defutf8 on
+
+#setenv DISPLAY ':0'
+
+nonblock on
+
+#msgwait 10
+
+
+## add CPU idle/sustem/user/interrupt stats
+# backtick 100 5 5 tail -1 /var/tmp/vermaden-stats-top
+# caption always '%{= wk} %= %100` %='
+
+## Allow editors etc. to restore display on exit
+## rather than leaving existing text in place
+#altscreen on
+altscreen off
+
+
