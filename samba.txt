@@ -27,8 +27,9 @@ sudo vim /etc/samba/smb.conf
    valid users = %S
 
 # ========== set user password
-sudo smbpasswd -a MY_USER1
-    # !!! it's better to set MY_USER1 same as windows account name + password !!!, 
+# !!! MUST be same of linux account !!!
+sudo smbpasswd -a `whoami`
+    # !!! it's better to set `whoami` same as windows account name + password !!!, 
     # or, you must input password manually, when access samba disk from windows
     
 
@@ -37,10 +38,14 @@ smbclient -L localhost
 
 
 # will ask for
-Enter WORKGROUP\MY_USER1's password:
+Enter WORKGROUP\`whoami`'s password:
+
+# ========== access from windows
+# !!! if 'windows user name' <> 'linux user name', try to access shared folder by 'linux user account' !!!
+# !!! e.g. map network driver with 'linux user account' !!!
 
 # when access from windows,
-# should input 'WORKGROUP\MY_USER1' + 'password set by smbpasswd'
+# should input 'WORKGROUP\`whoami`' + 'password set by smbpasswd'
 
 
 
@@ -48,6 +53,7 @@ Enter WORKGROUP\MY_USER1's password:
 sudo service smbd       start
 sudo service smbd       stop
 sudo service smbd       restart
+
 sudo service smbd       status
 
 
