@@ -270,5 +270,5 @@ bind '"\e[1;3C": forward-word'  ### Alt right
 # rm -rf /System/Library/Caches/*
 
 
-alias logless='ls log*201*.log | tail -1 | xargs less -i -f -R'
+alias logless='ls log*20*.log | tail -1 | xargs less -i -f -R'
 
