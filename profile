@@ -192,7 +192,7 @@ function dird() { if [ $# -ne 2 ]
   then
     echo "ERROR : must provide 2 parameters"
   else
-    diff -qr $1 $2 | sort | grep -a "/CVS: |/CVS/|/\.git/" $GREP_PARAM -v | sed "s/^Files \(.\+\) and \(.\+\) differ$/vimdiff \1 \2/" | sed "s/^Only in \(.\+\): \(.\+\)$/\1\/\2 # single/"
+    diff -qr --strip-trailing-cr $1 $2 | sort | grep -a "/CVS: |/CVS/|/\.git/" $GREP_PARAM -v | sed "s/^Files \(.\+\) and \(.\+\) differ$/vimdiff \1 \2/" | sed "s/^Only in \(.\+\): \(.\+\)$/\1\/\2 # single/"
   fi
 }
 
