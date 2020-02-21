@@ -16,7 +16,7 @@ echo '=== BEGIN ==========' >>  $LOG_FILE
 echo '====================' >>  $LOG_FILE
 
 echo '====================' >>  $LOG_FILE
-date +'%Y%M%d_%H%m%S'       >>  $LOG_FILE
+date +'%Y%m%d_%H%M%S'       >>  $LOG_FILE
 echo '====================' >>  $LOG_FILE
 
 echo 'pwd'                  >>  $LOG_FILE
