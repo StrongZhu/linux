@@ -1,0 +1,74 @@
+# ============================================
+# show disk
+
+sudo fdisk -l
+
+sudo blkid
+
+# ============================================
+# disk hibernation ?
+sudo apt-get install hdparm -y
+
+# use  'sudo blkid' to check /dev/XXX,  e.g. '/dev/sda1'
+
+sudo hdparm -y /dev/sda1
+
+# below output means it support hibernation
+#  issuing standby command
+
+
+#
+sudo vim /etc/rc.local
+
+# add below line before 'exit 0'
+hdparm -B 127 -S 60 /dev/sda1
+
+#   30 = 2 min 30 sec
+#   60 = 5 minutes
+#   120 = 10 minutes
+#   180 = 15 minutes
+#   241 = 30 minutes
+#   242 = 1 hour
+#   243 = 1.5 hours
+#   244 = 2 hours
+
+# ============================================
+# USB disk might be mounted automatically, maybe we should change permission, not tested yet, as I have run cmd : 'chmod o+rwx /media/pi'
+sudo chown pi:pi /media/pi
+
+# ============================================
+# mount disk
+# !!! !!!
+sudo mkdir /media/usbhdd
+sudo chown pi:pi /media/usbhdd
+
+sudo mount -t auto -o uid=pi,gid=pi /dev/sda1 /media/usbhdd
+
+
+
+# ============================================
+# install package to support NTFS,
+sudo apt-get install ntfs-3g
+
+
+
+# ============================================
+# ============================================
+# ============================================
+# GNOME Commander, alternative for total commander
+sudo apt-get update -y
+sudo apt-get install -y gnome-commander
+# -y : always 'yes'
+
+# ============================================
+# ============================================
+# ============================================
+
+# ============================================
+# ============================================
+# ============================================
+
+# ============================================
+# ============================================
+# ============================================
+
