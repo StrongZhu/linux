@@ -8,6 +8,8 @@ sudo apt-get install smbclient # Linux客户端测试用
 
 
 # ========== update config
+# show files
+sudo ls -al /etc/samba/
 
 # backup
 sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.ori
@@ -26,12 +28,26 @@ sudo vim /etc/samba/smb.conf
    directory mask = 0700
    valid users = %S
 
+[media_pi]
+   comment = media_pi
+   path = /media/pi/
+   browseable = yes
+   read only = no
+   create mask = 0700
+   directory mask = 0700
+   valid users = %S,pi
+#                 ~~~~~ add 'pi' in here, maybe '%S' means file owner, maybe not 'pi', not sure
+
+# check parameters
+testparm
+
 # ========== set user password
 # !!! MUST be same of linux account !!!
 sudo smbpasswd -a `whoami`
-    # !!! it's better to set `whoami` same as windows account name + password !!!, 
+    # !!! it's better to set `whoami` same as windows account name + password !!!,
     # or, you must input password manually, when access samba disk from windows
-    
+
+
 
 # ========== test under linux, with smbclient
 smbclient -L localhost
