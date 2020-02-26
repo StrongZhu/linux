@@ -1,0 +1,96 @@
+# ========================================================
+# ========================================================
+# ========================================================
+# reference : 
+# https://www.cnblogs.com/mangM/p/11478714.html
+
+
+# ========================================================
+# ========================================================
+# ========================================================
+# for NTFS
+sudo apt-get install ntfs-3g
+
+
+# ========================================================
+# qbittorrent
+# ========================================================
+
+# --------------------------------------------------------
+# install
+sudo apt-get install qbittorrent-nox    # no GUI
+
+sudo apt-get install qbittorrent        # with GUI ??
+
+# --------------------------------------------------------
+# start from command line
+qbittorrent-nox
+
+# then, can visit from URL : http://pi4:8080
+# user     : admin
+# password : adminadmin
+#
+# from web page
+#   Tools --> Optioins --> Downloads --> ...(specific folder)
+
+# --------------------------------------------------------
+# install as system service
+
+# create new file
+sudo vim /etc/systemd/system/qbittorrent.service
+
+# add below stuff
+[Unit]
+Description=qBittorrent Daemon Service
+After=network.target
+
+[Service]
+User=pi
+ExecStart=/usr/bin/qbittorrent-nox
+ExecStop=/usr/bin/killall -w qbittorrent-nox
+
+[Install]
+WantedBy=multi-user.target
+
+
+# --------------------------------------------------------
+# reload daemon
+sudo systemctl daemon-reload
+
+sudo    systemctl status    qbittorrent
+
+sudo    systemctl start     qbittorrent
+sudo    systemctl stop      qbittorrent
+sudo    systemctl restart   qbittorrent
+
+#服务开机自启
+sudo    systemctl enable    qbittorrent
+
+
+# ========================================================
+# ========================================================
+# ========================================================
+
+# --------------------------------------------------------
+
+
+# --------------------------------------------------------
+
+
+
+# ========================================================
+# ========================================================
+# ========================================================
+
+# --------------------------------------------------------
+
+
+# --------------------------------------------------------
+
+
+
+# ========================================================
+# ========================================================
+# ========================================================
+
+

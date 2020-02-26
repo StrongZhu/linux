@@ -272,3 +272,14 @@ bind '"\e[1;3C": forward-word'  ### Alt right
 
 alias logless='ls log*20*.log | tail -1 | xargs less -i -f -R'
 
+
+# list all service, and print command to start/stop/status
+alias l.svc='systemctl --type=service | g "^[^ ]+\.service" -o | sort | sed "s/\.service$//" | while read line ; do 
+printf "sudo    systemctl     restart        %s\n" "$line" ; 
+printf "sudo    systemctl     start          %s\n" "$line" ; 
+printf "sudo    systemctl     stop           %s\n" "$line" ; 
+printf "sudo    systemctl     status         %s\n" "$line" ; 
+echo ; 
+done'
+
+

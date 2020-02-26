@@ -38,6 +38,9 @@ sudo vim /etc/samba/smb.conf
    valid users = %S,pi
 #                 ~~~~~ add 'pi' in here, maybe '%S' means file owner, maybe not 'pi', not sure
 
+# maybe below command can help, not tested yet
+sudo chown pi:pi /media/pi
+
 # check parameters
 testparm
 
