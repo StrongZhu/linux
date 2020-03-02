@@ -1,3 +1,172 @@
+#### ========================
+#### telegraf
+#### ========================
+
+* reference
+```
+https://www.cnblogs.com/duanxz/p/10432512.html
+https://blog.csdn.net/youngtong/article/details/84640382
+
+# for input
+https://blog.csdn.net/wangshuminjava/article/details/82314427
+
+```
+
+* install
+```
+# https://github.com/influxdata/telegraf/releases
+# search 'armhf'
+
+wget https://dl.influxdata.com/telegraf/releases/telegraf_1.13.4-1_armhf.deb
+sudo dpkg -i telegraf_1.13.4-1_armhf.deb
+
+# get version : 1.13.4
+# will be installed as service
+sudo    systemctl     restart        telegraf
+sudo    systemctl     start          telegraf
+sudo    systemctl     stop           telegraf
+sudo    systemctl     status         telegraf
+```
+
+* config
+```
+
+
+# ---------------------------------------------
+# input/output list
+telegraf --input-list   | sort
+telegraf --output-list  | sort
+
+
+# ---------------------------------------------
+
+# generate config
+# syntax : telegraf --input-filter <pluginname>[:<pluginname>] --output-filter <outputname>[:<outputname>] config > telegraf.conf
+
+# change permission, make sure there is NO error
+export CONFIG_FILE=telegraf.influxdb.conf
+
+telegraf config > $CONFIG_FILE
+chmod 777 $CONFIG_FILE
+
+telegraf --input-filter cpu:mem:disk:diskio:net:netstat:temp:file:exec --output-filter influxdb config > $CONFIG_FILE
+telegraf -config $CONFIG_FILE -input-filter cpu     -test
+telegraf -config $CONFIG_FILE -input-filter mem     -test
+telegraf -config $CONFIG_FILE -input-filter disk    -test
+telegraf -config $CONFIG_FILE -input-filter diskio  -test
+telegraf -config $CONFIG_FILE -input-filter net     -test
+telegraf -config $CONFIG_FILE -input-filter netstat -test
+telegraf -config $CONFIG_FILE -input-filter temp    -test
+telegraf -config $CONFIG_FILE -input-filter file    -test
+telegraf -config $CONFIG_FILE -input-filter exec    -test
+
+
+# ---------------------------------------------
+# for cpu/gpu temperature, update config with below stuff,  (read file, run cmd)
+[[inputs.file]]
+  files = ["/sys/class/thermal/thermal_zone0/temp"]
+  name_override = "cpu_temperature"
+  data_format = "value"
+  data_type = "integer"
+
+[[inputs.exec]]
+  commands = [ "/opt/vc/bin/vcgencmd measure_temp" ]
+  name_override = "gpu_temperature"
+  data_format = "grok"
+  grok_patterns = ["%{NUMBER:value:float}"]
+
+# !!! the commands is run under user 'telegraf', command might be failed, exit code 255 !!!
+# run below to solve issue, add 'telegraf' to 'video' group
+# reference : https://chewett.co.uk/blog/258/vchi-initialization-failed-raspberry-pi-fixed/
+sudo usermod -aG video telegraf
+
+
+# show user/group
+getent passwd
+getent group
+
+
+# data format
+# https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
+
+# ---------------------------------------------
+# do NOT enable log, because it have NO permission to write log file, after restart
+  logtarget = "file"
+  logfile = "/var/log/telegraf/telegraf.log"
+
+# ---------------------------------------------
+
+# for multiple config files
+export CONFIG_FILE=telegraf.redis.conf
+
+telegraf config > $CONFIG_FILE
+chmod 777 $CONFIG_FILE
+
+telegraf --input-filter redis --output-filter influxdb config > $CONFIG_FILE
+
+telegraf -config $CONFIG_FILE --input-filter redis --output-filter opentsdb:influxdb -test
+
+```
+
+* create table (in influxdb) for telegraf
+```
+influx
+
+# go to client
+create user "telegraf" with password 'password'
+show users;
+
+# create DB
+CREATE DATABASE telegraf;
+show databases;
+
+# exit
+exit
+
+
+```
+
+#### ========================
+#### influxdb
+#### ========================
+
+* 3rd-part client tools
+```
+https://github.com/CymaticLabs/InfluxDBStudio/releases
+```
+
+* install on raspeberry
+```
+sudo apt install influxdb
+# will get version : 1.6.4
+
+# it will be installed as service
+
+sudo    systemctl     restart        influxdb
+sudo    systemctl     start          influxdb
+sudo    systemctl     stop           influxdb
+sudo    systemctl     status         influxdb
+
+```
+
+* get the latest version?
+```
+
+# https://portal.influxdata.com/downloads/
+
+wget https://dl.influxdata.com/influxdb/releases/influxdb-1.7.10_linux_armhf.tar.gz
+tar xvfz influxdb-1.7.10_linux_armhf.tar.gz
+
+# copy manually ???
+# !!! NOT tested !!!
+
+```
+* get config
+```
+influxd config | less
+```
+
+
 * 程序
 ```
 influxd          influxdb服务器

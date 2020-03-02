@@ -64,6 +64,16 @@ sudo apt-get install -y gnome-commander
 # ============================================
 # ============================================
 
+# show user/group
+getent passwd
+getent group
+
+
+# append user to group
+sudo usermod -aG video telegraf
+# -a : append
+# -G : group
+
 # ============================================
 # ============================================
 # ============================================

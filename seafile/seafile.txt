@@ -1,0 +1,131 @@
+# ----------------------------------------
+# seafile (with sqlite)
+# reference :
+# https://download.seafile.com/published/seafile-manual/deploy/using_sqlite.md
+
+# download from
+# https://github.com/haiwen/seafile-rpi/releases
+#
+
+# ----------------------------------------
+# Seafile Server 7.0.5 for Raspberry Pi
+#  Starting from 7.0, it is mandatory to install the certifi and idna dependence modules:
+
+     pip install certifi idna
+sudo pip install certifi idna
+
+# ----------------------------------------
+# get file
+wget https://github.com/haiwen/seafile-rpi/releases/download/v7.0.5/seafile-server_7.0.5_stable_pi.tar.gz
+
+
+
+# ----------------------------------------
+# following instructions in the page
+mkdir haiwen
+mv seafile-server_* haiwen
+cd haiwen
+
+# after moving seafile-server_* to this directory
+tar -xzf seafile-server_*
+
+mkdir installed
+mv seafile-server_* installed
+
+# now we have
+# /home/pi/haiwen/seafile-server-7.0.5
+
+
+# ----------------------------------------
+# Prerequisites 
+sudo apt-get install python2.7 libpython2.7 python-setuptools python-ldap python-urllib3 sqlite3 python-requests
+
+
+# ----------------------------------------
+# setuptools
+cd seafile-server-*
+
+./setup-seafile.sh  #run the setup script & answer prompted questions
+
+
+# ----------------------------------------
+# met error :
+# Failed to sync seafile database. --> do not change datagbase file path, just use default value
+
+# ----------------------------------------
+# Before Running
+Since Seafile uses persistent connections between client and server, you should increase Linux file descriptors by ulimit if you have a large number of clients before start Seafile, like:
+
+ulimit -n 30000
+
+
+# ----------------------------------------
+# change config
+vim conf/gunicorn.conf
+
+# change 
+# bind = "127.0.0.1:8000"
+# to
+# bind = "0.0.0.0:8000"
+
+# change config
+vim conf/ccnet.conf
+
+# change
+# SERVICE_URL = http://192.168.0.130:8000
+# to proper value
+
+
+# ----------------------------------------
+# run seafile server:     ./seafile.sh { start | stop | restart }
+# run seahub  server:     ./seahub.sh  { start <port> | stop | restart <port> }
+cd /home/pi/haiwen/seafile-server-latest
+
+
+./seafile.sh    start
+./seafile.sh    stop
+./seafile.sh    restart
+
+./seahub.sh     start
+./seahub.sh     stop
+./seahub.sh     restart
+
+# start/stop all
+./seafile.sh    start
+./seahub.sh     start
+
+./seafile.sh    stop
+./seahub.sh     stop
+
+
+# -----------------------------------------------------------------
+# If the server is behind a firewall, remember to open these tcp ports:
+# ---------------------------------------------------------------
+
+# port of seafile fileserver:   8082
+# port of seahub:               8000
+
+
+# ----------------------------------------
+# reset super user
+./reset-admin.sh
+# input email + password
+email     : admin@gmail.com
+password  : admin
+
+# ----------------------------------------
+# visit
+http://pi4:8000/
+
+# ----------------------------------------
+# stop all, then create symbolic, (copy all files), then start
+# e.g.
+#    /home/pi/haiwen/seafile-data -> /media/pi/Two_T_632/seafile-data.ori
+
+
+
+# ----------------------------------------
+# from iphone, install seafile client
+# login to server
+# change 'setting' : auto upload photo/video, to selected folder
+

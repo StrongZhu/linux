@@ -87,7 +87,7 @@ then
   alias psg='ps -ef | grep -a -i --color -P'
   alias no='grep -a "/\.git/" -v -P'
 
-  echo "UNAME=$UNAME : Linux/MINGW64_NT-6.1"
+  echo "UNAME=$UNAME : Linux/MINGW*"
 
 fi
 
