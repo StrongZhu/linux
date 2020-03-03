@@ -1,0 +1,54 @@
+# ==============================================
+# error (windows, maybe has the issue in pi)
+# Q : get error msg : udp is not supported yet
+# A : enable 'dht' in config
+
+# ==============================================
+# reference
+http://mkitby.com/2016/01/15/raspberry-pi-nas-remote-download-aria2/
+
+# ==============================================
+# install
+sudo apt-get install aria2
+
+
+aria2c -v
+# aria2 version 1.34.0
+# Copyright (C) 2006, 2017 Tatsuhiro Tsujikawa
+
+
+# create conf file
+mkdir /home/pi/.aria2
+touch /home/pi/.aria2/aria2.session
+vim /home/pi/.aria2/aria2.conf        # input file, e.g. linux/aria2/aria2.conf
+
+# file-allocation=falloc      : not supported on pi
+# file-allocation=falloc      : change to this
+
+
+# ==============================================
+# test with cmd
+aria2c --conf-path=/home/pi/.aria2/aria2.conf
+
+# ==============================================
+# add to service
+sudo vim /etc/init.d/aria2c           # e.g. linux/aria2/aria2c
+sudo chmod +x /etc/init.d/aria2c
+sudo update-rc.d aria2c defaults
+sudo service aria2c restart
+
+
+sudo    systemctl     restart        aria2c
+sudo    systemctl     start          aria2c
+sudo    systemctl     stop           aria2c
+sudo    systemctl     status         aria2c
+
+
+
+
+# ==============================================
+# install nginx, then yaaw (WebUI), 
+# for now don't install it, becasue we can run 'AriaNg/AriaNg-1.1.4/index.html' from windows, then connect to pi instance.
+
+# ==============================================
+
