@@ -1,0 +1,169 @@
+========================
+# ----------------
+# alias for user/group
+# ----------------
+# show all users/groups
+alias all.user="getent passwd  | cut -d: -f1 | sort"
+alias all.group="getent group   | cut -d: -f1 | sort"
+
+# show valid users
+alias all.user.slow="eval getent passwd {$(awk '/^UID_MIN/ {print $2}' /etc/login.defs)..$(awk '/^UID_MAX/ {print $2}' /etc/login.defs)} | sort"
+
+# get 'group of user', 'user of group'
+alias get.group.of.user="id -nG"
+alias get.user.of.group="getent group"
+
+# show usage of 'add user to group'
+alias add.user.to.grpu="echo 'sudo    usermod -G GROUP_NAME -a  USER_NAME' "
+
+========================
+# ----------------
+# create user/group
+# ----------------
+export NEW_USER=olivia1
+export NEW_USER=olivia2
+sudo useradd -m   $NEW_USER                 # with 'home' dir'
+# sudo useradd      $NEW_USER                 # create user, NO home dir, and it's locked
+# sudo userdel      $NEW_USER  -f             # del user, by force
+
+
+sudo passwd       $NEW_USER                 # change password, from prompt
+
+# sudo useradd -m $NEW_USER -p PASSWORD     # all in 1 step
+
+su    $NEW_USER                             # switch to account, 'exit' to switch back
+
+sudo usermod -L USERNAME                    # lock account
+
+# add user/change password, in batch
+newusers input_file                         # file format : same as /etc/passwd
+chpasswd < input_file                       # file format : "user:passwod", per line
+
+chage -l    `whoami`          # password age
+        # chage [option] username
+        #  -l, --list                    show account aging information
+        #  -E, --expiredate EXPIRE_DATE  set account expiration date to EXPIRE_DATE      , '0' : expire immediately
+        #  -M, --maxdays MAX_DAYS        set maximim number of days before password, change to MAX_DAYS
+        #  -m, --mindays MIN_DAYS        set minimum number of days before password, change to MIN_DAYS
+        #  -W, --warndays WARN_DAYS      set expiration warning days to WARN_DAYS
+
+# ----------------
+export NEW_GROUP=editor
+
+sudo groupadd $NEW_GROUP                    # new group
+# sudo groupdel $NEW_GROUP  -f                # del group, by force
+
+# ----------------
+sudo usermod -G $NEW_GROUP -a $NEW_USER     # !!! add user to group !!!
+        #  -G, --groups GROUPS           new list of supplementary GROUPS
+        #  -a, --append                  append the user to the supplemental GROUPS
+        #                                mentioned by the -G option without removing
+        #                                him/her from other groups
+
+        
+# ----------------
+less /etc/passwd              # !!! do NOT change this file !!!
+        # root:x:0:0:root:/root:/bin/bash
+        # daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+        # bin:x:2:2:bin:/bin:/usr/sbin/nologin
+        # 
+        # username,
+        # placeholder (for password)
+        # UID
+        # GID, main group
+        # description, use 'chfn username' change this
+        # homedir
+        # login shell, use 'chsh -s /bin/bash username' to change it
+
+less /etc/login.defs          # login def file
+
+
+========================
+
+# ----------------
+# show ALL user
+# ----------------
+getent passwd   | cut -d: -f1 | sort
+cat /etc/passwd | cut -d: -f1 | sort
+
+# show min/max uid
+grep -E '^UID_' /etc/login.defs
+        #        UID_MIN                  1000
+        #        UID_MAX                 60000
+
+# list all normal users in our Linux system:
+getent passwd {1000..60000}
+
+eval getent passwd {$(awk '/^UID_MIN/ {print $2}' /etc/login.defs)..$(awk '/^UID_MAX/ {print $2}' /etc/login.defs)}
+
+        #      export MY_UID_MIN=`grep '^UID_MIN' /etc/login.defs | sed 's/^UID_MIN[ \t]\+//'`
+        #      export MY_UID_MAX=`grep '^UID_MAX' /etc/login.defs | sed 's/^UID_MAX[ \t]\+//'`
+        #      eval "getent passwd {$MY_UID_MIN..$MY_UID_MAX}"
+
+# ----------------
+# show ALL groups
+# ----------------
+
+getent group | cut -d: -f1              | sort
+getent group | awk -F: '{ print $1}'    | sort
+
+
+# ----------------
+# user --> corresponding groups
+# ----------------
+
+groups
+groups xxxxx
+# show all groups for user
+# in the result, the first group is "the primary group".
+
+id
+id -nG
+id        pi
+id -nG    pi
+# -n : name only, no number
+# -g : primary group only
+# -G : show all groups
+# uid : the user ID
+# gid : the user’s primary group 
+# groups : and the user’s secondary groups
+
+# ----------------
+# group --> corresponding users
+# ----------------
+getent group group_name1
+getent group pi
+
+
+
+
+
+
+
+
+========================
+# ----------------
+# user/group for file/dir
+# ----------------
+chown --help                  # Change the owner and/or group of each FILE to OWNER and/or GROUP.
+
+chown     user1 file_dir1         # Change the owner of 'file_dir1' to 'user1'.
+chown     user1:group1 file_dir1  # also change its group to 'group1.
+chown -hR user1 file_dir1         # -R, --recursive        operate on files and directories recursively
+chown -hR user1 file_dir1         # -h, --no-dereference   affect symbolic links instead of any referenced file
+
+
+chgrp --help                  # Change the group of each FILE to GROUP.
+chgrp     group1  file_dir1   # Change the group of 'file_dir1' to 'group1'
+chgrp -hR group1  file_dir1   # -R, --recursive, 
+                              # -h, --no-dereference   affect symbolic links instead of any referenced file
+
+
+
+
+
+
+
+
+
+

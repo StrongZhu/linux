@@ -1,0 +1,287 @@
+========================
+# reference : 
+#   https://blog.spider.im/post/mldonkey-on-raspberry/
+#   http://www.valent-blog.eu/2013/12/09/installare-mldonkey-su-raspberry-pi/
+#   https://www.raspberrypi.org/forums/viewtopic.php?t=13447
+
+
+
+========================
+# install
+
+# sudo apt-get update
+# sudo apt-get upgrade
+sudo apt-get install mldonkey-server
+
+# when finished, it's running under 'mldonkey'
+# !!! kill it !!!
+# change file
+sudo cp   /etc/default/mldonkey-server    /etc/default/mldonkey-server.ori
+sudo vim  /etc/default/mldonkey-server
+
+# change to
+#       MLDONKEY_USER=root
+#       MLDONKEY_GROUP=root
+
+# change owner of some file, !!! because in the command line, will set user by : USER=`/usr/bin/stat --format="%U" "$MLDONKEY_DIR/downloads.ini"`
+sudo chown -R root:root /var/lib/mldonkey/
+
+# !!!! remove it, then re-install it !!!
+sudo apt-get remove mldonkey-server
+sudo apt-get install mldonkey-server
+
+
+# when it's finished, the process is running under 'root'
+root     18336     1  3 10:43 ?        00:00:00 /usr/bin/mlnet -log_file /var/log/mldonkey/mlnet.log -pid /var/run/mldonkey
+
+# it will be installed as system service
+sudo    systemctl     restart        mldonkey-server
+sudo    systemctl     start          mldonkey-server
+sudo    systemctl     stop           mldonkey-server
+sudo    systemctl     status         mldonkey-server
+
+
+
+# sudo apt-get install telnet
+
+
+========================
+# !!! change admin password !!!
+telnet 127.0.0.1 4000
+          Trying 127.0.0.1...
+          Connected to 127.0.0.1.
+          Escape character is '^]'.
+          Welcome to MLDonkey 3.1.6
+          Welcome on mldonkey command-line
+
+          Use ? for help
+
+          MLdonkey command-line:
+          > auth admin ""
+          > passwd newpasswd
+          
+          > set allowed_ips "127.0.0.1 192.168.255.255"
+          > set allowed_ips "127.0.0.1 192.168.0.255"
+
+
+          # show disk/port/run info
+          > sysinfo
+
+          # show option
+          > options
+
+          # set temp_directory
+          > set temp_directory "/media/pi/Two_T_632/mldonkey/temp"
+
+          # save config
+          > save
+
+          > quit
+
+# when you have set the password, use below cmd in telnet to login
+#  auth admin <password>
+
+# allowed_ips: converted 192.168.255.255 to 192.168.0.0/16    i.e. the leading 16 bit are of '1' in mask
+# allowed_ips: converted 192.168.0.255 to 192.168.0.0/24      i.e. the leading 24 bit are of '1' in mask
+
+# quit telnet
+quit
+
+# then you can visit web GUI
+http://localhost:4080/
+http://pi4:4080/
+
+
+========================
+# log file
+sudo less /var/log/mldonkey/mlnet.log
+
+========================
+# !!! add shared dir !!!
+# create folder
+mkdir -p /media/pi/Two_T_632/mldonkey/incoming_files
+mkdir -p /media/pi/Two_T_632/mldonkey/incoming_directories
+
+# open GUI : http://pi4:4080/
+# !!! Options --> Shares  !!!
+# !!! 'Add Share'         !!!
+0 /media/pi/Two_T_632/mldonkey/incoming_files       incoming_files
+0 /media/pi/Two_T_632/mldonkey/incoming_directories incoming_directories
+
+# 'Unshare' other, because they might be of '/home/mldonkey'
+
+# there are two type of directory
+#   incoming_files
+#   incoming_directories
+# can be pointed to the same dir
+# !!! for each type, there MUST be one folder !!
+#
+
+# after restart, will save to file
+/var/lib/mldonkey/downloads.ini
+           shared_directories = [
+            {     dirname = "/media/pi/Two_T_632/mldonkey/incoming_directories"
+               strategy = incoming_directories
+               priority = 0
+          };
+            {     dirname = "/media/pi/Two_T_632/mldonkey/incoming_files"
+               strategy = incoming_files
+               priority = 0
+          };]
+
+          
+          
+========================
+# config file
+sudo less   /etc/default/mldonkey-server
+sudo less   /var/lib/mldonkey/donkey.ini
+sudo less   /var/lib/mldonkey/downloads.ini
+
+# change 'allowed_ips'
+#        (* list of IP address allowed to connect to the core via telnet/GUI/WEB
+#          for internal command set: list separated by spaces
+#          example for internal command: set allowed_ips "127.0.0.0/8 192.168.1.2"
+#          or for editing the ini-file: list separated by semi-colon
+#          example for ini-file: allowed_ips = [ "127.0.0.0/8"; "192.168.1.2";]
+#          CIDR and range notations are supported: ie use 192.168.0.0/24
+#          or 192.168.0.0-192.168.0.255 for 192.168.0.* *)
+# allowed_ips = [
+#  "192.168.0.0/24";
+#  "127.0.0.1";]
+#
+#         "192.168.0.0/24";  <--- the leading 24 bit in the mask is '1', i.e. "192.168.0.0/24" is the same of "192.168.0.*"
+#
+
+
+
+
+
+
+
+
+
+
+
+
+========================
+========================
+# permission issue, too complex, no time to investigate
+========================
+========================
+========================
+========================
+
+========================
+# permission issue
+# check this file
+#     /etc/init.d/mldonkey-server
+#         USER=`/usr/bin/stat --format="%U" "$MLDONKEY_DIR/downloads.ini"`
+#         WRAPPER_OPTIONS="$WRAPPER_OPTIONS --user $USER"
+# will have "--user $USER"
+#
+# the final command line will be like
+#         start-stop-daemon --start --iosched idle --chuid root:root --chdir /var/lib/mldonkey --group root --umask 0022 --user mldonkey     --pidfile /var/run/mldonkey/mlnet.pid --background --no-close --exec /usr/bin/mlnet     -- -log_file /var/log/mldonkey/mlnet.log -pid /var/run/mldonkey
+#
+# change it's owner to 'root'
+sudo chown root  /var/lib/mldonkey/downloads.ini
+#
+# some script change owner of this this file back to 'mldonkey', don't know
+
+
+========================
+# reference : https://blog.spider.im/post/mldonkey-on-raspberry/
+# fix permission issue :
+# !!! the process is running under 'mldonkey', try to run it under 'root' !!!
+
+# process
+#     mldonkey  5997     1  1 04:32 ?        00:00:04 /usr/bin/mlnet -log_file /var/log/mldonkey/mlnet.log -pid /var/run/mldonkey
+# user info
+id mldonkey
+#     uid=113(mldonkey) gid=121(mldonkey) groups=121(mldonkey)
+#
+# check file  /etc/init.d/mldonkey-server
+# and         /var/log/mldonkey/mlnet.log
+# can find that we can specific start account by changing file
+#
+sudo vim /etc/default/mldonkey-server
+        # MLDonkey configuration file
+#
+# change to
+#   MLDONKEY_DIR=/root/.mldonkey
+#   MLDONKEY_USER=root
+#   MLDONKEY_GROUP=root
+#
+# then copy the file
+sudo cp -r /var/lib/mldonkey /root/.mldonkey/
+
+# then restart service
+
+
+# !!! investigation !!!
+# start service, by cmd
+# sudo /etc/init.d/mldonkey-server start
+# there no too much output, becuase it call  below shell script in the begining
+#   . /lib/lsb/init-functions
+
+# disable it, run again, and echo full command line, run it (with sudo)
+#     sudo      start-stop-daemon --start --iosched idle --chuid root:root --chdir /var/lib/mldonkey --group root --umask 0022 --user mldonkey     --pidfile /var/run/mldonkey/mlnet.pid --background --no-close --exec /usr/bin/mlnet     -- -log_file /var/log/mldonkey/mlnet.log -pid /var/run/mldonkey
+
+# get error:
+#     Fatal error: exception Sys_error("/var/run/mldonkey/mlnet.pid: Permission denied")
+
+# check dir permission
+          stat /var/run/mldonkey/
+            File: /var/run/mldonkey/
+            Size: 40              Blocks: 0          IO Block: 4096   directory
+          Device: 13h/19d Inode: 12567518    Links: 2
+          Access: (0755/drwxr-xr-x)  Uid: (    0/    root)   Gid: (    0/    root)
+
+# change owner user/group
+sudo chown  mldonkey:mldonkey /var/run/mldonkey/
+
+
+========================
+# sometime, you must kill process manually, by cmd
+# sudo kill 'pid___of_mlnet___running_under_mldonkey'
+# the pid is 
+# this cmd does NOT work. 'sudo    systemctl     stop           mldonkey-server'
+#
+# root cause :
+# checked file : "/etc/init.d/mldonkey-server"
+# will use below cmd to stop ( added 'sudo' to run manually )
+#     sudo start-stop-daemon --stop --oknodo --pidfile /var/run/mldonkey/mlnet.pid  --retry 30
+# get error : 
+# start-stop-daemon: matching only on non-root pidfile /var/run/mldonkey/mlnet.pid is insecure
+# file :
+# -rw-r--r-- 1 mldonkey mldonkey 5 Mar  4 04:05 /var/run/mldonkey/mlnet.pid
+# change it to 'root:root'
+
+
+
+
+========================
+# # add user to group ????
+# sudo usermod -a -G pi mldonkey
+
+========================
+# found error
+#        systemd[1]: Starting LSB: Server for the mldonkey peer-to-peer downloader....
+#        mldonkey-server[14541]: Starting MLDonkey: mlnet
+#        systemd[1]: mldonkey-server.service: Control process exited, code=exited, status=1/FAILURE
+#        systemd[1]: mldonkey-server.service: Failed with result 'exit-code'.
+#        systemd[1]: Failed to start LSB: Server for the mldonkey peer-to-peer downloader..
+
+# stop, the restart
+sudo    systemctl     stop           mldonkey-server
+sudo    systemctl     status         mldonkey-server
+
+
+========================
+# check log file
+less /var/log/mldonkey/mlnet.log
+
+
+
+
+
+

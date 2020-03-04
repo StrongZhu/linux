@@ -137,6 +137,20 @@ alias .5='cd ../../../../../'               # Go back 5 directory levels
 alias .6='cd ../../../../../../'            # Go back 6 directory levels
 
 alias v='vim'
+
+alias sv='sudo -E vim'                      # -E, --preserve-env            preserve user environment when running command
+alias svim='sudo vim -u ~/.vimrc'           # vim -u won't help with plugin's, sudo -E seem's like a necessary evil to go with, or you can always sync the user vim conf with the root vim conf
+# can do similiar stuff by
+#   sudo su
+#   cd        # will go to /root/
+#   # create symbolic
+#   ln -sf /home/pi/git-prompt.sh
+#   ln -sf /home/pi/pro
+#   ln -sf /home/pi/.vimrc
+#   ln -sf /home/pi/screenrc
+#   ln -sf /home/pi/.screenrc
+#
+
 alias les='less -i -f -R'
 
 alias his='history'
@@ -274,7 +288,9 @@ alias logless='ls log*20*.log | tail -1 | xargs less -i -f -R'
 
 
 # list all service, and print command to start/stop/status
-alias l.svc='systemctl --type=service | g "^[^ ]+\.service" -o | sort | sed "s/\.service$//" | while read line ; do 
+#   --plain : if some job failed, might add some prefix, if no this --plain param,  hence break the grep logic
+# alias l.svc='systemctl --type=service | g "^[^ ]+\.service" -o | sort | sed "s/\.service$//" | while read line ; do 
+alias l.svc='systemctl --type=service --plain| grep -E "^.+?\.service" -o | sort | sed "s/\.service$//" | while read line ; do
 printf "sudo    systemctl     restart        %s\n" "$line" ; 
 printf "sudo    systemctl     start          %s\n" "$line" ; 
 printf "sudo    systemctl     stop           %s\n" "$line" ; 
@@ -282,4 +298,20 @@ printf "sudo    systemctl     status         %s\n" "$line" ;
 echo ; 
 done'
 
+# ----------------
+# alias for user/group
+# ----------------
+# show all users/groups
+alias all.user="getent passwd  | cut -d: -f1 | sort"
+alias all.group="getent group   | cut -d: -f1 | sort"
+
+# show valid users
+alias all.user.slow="eval getent passwd {$(awk '/^UID_MIN/ {print $2}' /etc/login.defs)..$(awk '/^UID_MAX/ {print $2}' /etc/login.defs)} | sort"
+
+# get 'group of user', 'user of group'
+alias get.group.of.user="id -nG"
+alias get.user.of.group="getent group"
+
+# show usage of 'add user to group'
+alias add.user.to.grpu="echo 'sudo    usermod -G GROUP_NAME -a  USER_NAME' "
 

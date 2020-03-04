@@ -1,0 +1,364 @@
+> ?
+Main commands are:
+
+Servers:
+          vm : list connected servers
+          vma : list all servers
+          c/x <num> : connect/disconnect from a server
+
+Downloads:
+          vd : view current downloads
+          cancel/pause/resume <num> : cancel/pause/resume download <num>
+
+Searches:
+          s <keywords> : start a search for keywords <keywords> on the network
+          vr : view results of the last search
+          d <num> : download result number <num>
+          vs : view previous searches
+          vr <num> : view results of search <num>
+
+General:
+          save : save configuration files
+          kill : kill mldonkey properly
+          q : quit this interface
+
+Use 'longhelp' or '??' for all commands.
+Use 'longhelp str' or '?? str' for all commands that contain specified substring.
+Use 'help command' or '? command' for help on a command.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+> ??
+Available commands are:
+
+   Direct Connect:
+dc : Show Direct Connect buttons
+dcautoconnect <true/false> <ip> : Set/unset the server autoconnection state
+dcclients : Show all DC clients
+dcfilelists : List all filelists on disk
+dcfiles : Show all DC files
+dcfindsource : Find new source for a file
+dchublist [filtertext]: dchublist fin - filters hubs with text fin
+dchubs : Show connected DC hubs
+dcinfo : Direct Connect info
+dcloadfile <username> <tth> <directory> <filename> : Load a file
+dcloadfilelist <name> : Download filelist from user
+dcmessages <username> | <serverip> <serverport> : Show user or server messages
+dcmsglog <refresh> <user> | <refresh> <serverip> <serverport>
+dcn <ip> [<port>] : Add a server. Default port number is 411
+dcremclient <num> : Remove client by num
+dcsendmsg <user> <message> : Send message to user
+dcshared : Show all DC shared files. All/Hashed
+dcshowfilelist <name> : Show filelist for user
+dcuserip <user> : Query users ip from hub
+dcusers <all>|<ip> :Show DC users
+
+
+
+   Driver/Downloads:
+cancel <num|all> :                      cancel download (use arg 'all' for all files)
+commit :                                move downloaded files to incoming directory
+confirm <yes|no|what> :                 confirm cancellation
+continue <nums|all|where filter> :                      resume a paused download (use arg 'all' for all files)
+dllink <link> :                         download ed2k, sig2dat, torrent or other link
+dllinks <file> :                        download all the links contained in the file
+download_order <file number> <random|linear> :  change download order of file blocks (default random, with first and last block first)
+downloaders :                           display downloaders list
+filenames_variability :                 tell which files have several very different names
+pause <nums|all|where priority < prio> :                        pause a download (use arg 'all' for all files)
+preview <file number> :                 start previewer for file <file number>
+priority <priority> <nums|all|where filter> :   change file priorities
+release <num> :                         change release state of a download
+rename <num> "<new name>" :             change name of download <num> to <new name>
+resume <nums|all|where filter> :                        resume a paused download (use arg 'all' for all files)
+test_recover <num> :                    print the segments downloaded in file
+unpause <nums|all|where filter> :                       resume a paused download (use arg 'all' for all files)
+vd [<num>|queued|paused|downloading] :  view file info for download <num>, or lists of queued, paused or downloading files, or all downloads if no argument given
+verify_chunks <num|all> :                       verify chunks of file <num> (use 'all' for all files)
+
+   Driver/Friends:
+files <client num> :                    print files from friend <client num>
+friend_add <client num> :               add client <client num> to friends
+friend_remove <client numbers|all> :    remove friend (use arg 'all' for all friends)
+friends :                               display all friends
+gfr <client num> :                      ask friend files
+vfr :                                   view friends
+
+   Driver/General:
+activity <minutes> :                    print activity in the last <minutes> minutes
+alias :                                 add a command alias
+                                        for example: "alias ca cancel all" makes an alias
+                                        "ca" performing "cancel all"
+                                        to substitute an alias just make a new one
+                                        for example: "alias ca vd"
+buildinfo :                             print mldonkey core build information
+calendar_add <hour> "<command>" :       add a command to be executed every day
+clear_message_log :                             clear chat message buffer
+diskinfo :                              print mldonkey disk information
+dump_heap :                             dump heap for debug
+force_web_infos [<list of kind|URL>] :  re-download web_infos, leave empty to re-download all
+kill :                                  save and kill the server
+logout :                        logout interface
+message <client num> <msg> :            send a message to a client
+message_log :                           message_log [refresh delay in seconds]
+portinfo :                              print mldonkey port usage information
+q :                                     close telnet
+recover_temp :                          recover lost files from temp directory
+runinfo :                               print mldonkey runtime information
+sysinfo :                               print mldonkey core build, runtime and disk information
+unalias :                               delete a command alias
+                                        example: "unalias ca"
+uptime :                                core uptime
+urladd <kind> <url> [<period>] :        load this file from the web
+                                        kind is either server.met (if the downloaded file is a server.met)
+                                        period is the period between updates (in hours, default 0 = only loaded at startup)
+urlremove <url> :                       remove URL from web_infos
+vc <num|all> :                          view client (use arg 'all' for all clients)
+vcal :                                  print calendar
+version :                               print mldonkey version
+
+   Driver/Network:
+! <cmd> :                               start command <cmd>
+                                        must be allowed in 'allowed_commands' option or by 'allow_any_command' if arguments
+bw_stats :                              print current bandwidth stats
+bw_toggle [<high|low>]:                 toggle between the two rate and opened connection sets, high/low depend on option max_open_connections*
+costats [<all|regex>]:                  display country based transfer statistics for countries with data transfered,
+                                        use arg 'all' for all countries seen
+                                        or * as wildcard for country name, code and continent
+countries :                             display country database
+gdremove :                              remove graphical transfer statistics files
+gdstats :                               display graphical transfer statistics
+nu <m> :                                disable upload during <m> minutes, queue all files
+reset_costats :                         reset country based transfer statistics and save statistics.ini
+stats :                                 display transfer statistics
+vu :                                    view upload credits
+
+   Driver/Networks:
+disable <num> :                         disable a particular network
+discover_ip :                           start IP discovery
+enable <num> :                          enable a particular network
+force_porttest :                        force start network porttest
+networks :                              print all networks
+porttest :                              print network porttest results
+
+   Driver/Options:
+options :                               print options values by section
+save [<options|sources|backup>] :       save options and/or sources or backup (empty for options and sources)
+set <option_name> <option_value> :      change option value
+vo :                                    display options
+voo [<option>|changed]:                 print options (use * as wildcard), 'changed' prints all changed options, leave empty to print all options
+vwi :                                   print web_infos options
+
+   Driver/Searches:
+d <num> :                               file to download
+force_download :                        force download of an already downloaded file
+forget <num1> <num2> ... :              forget searches <num1> <num2> ...
+ls <query> :                            search for files locally
+
+        With special args:
+        -network <netname>
+        -minsize <size>
+        -maxsize <size>
+        -media <Video|Audio|...>
+        -Video
+        -Audio
+        -format <format>
+        -title <word in title>
+        -album <word in album>
+        -artist <word in artist>
+        -field <field> <fieldvalue>
+        -not <word>
+        -and <word>
+        -or <word>
+
+s <query> :                             search for files on all networks
+
+        With special args:
+        -network <netname>
+        -minsize <size>
+        -maxsize <size>
+        -media <Video|Audio|...>
+        -Video
+        -Audio
+        -format <format>
+        -title <word in title>
+        -album <word in album>
+        -artist <word in artist>
+        -field <field> <fieldvalue>
+        -not <word>
+        -and <word>
+        -or <word>
+
+view_custom_queries :                   view custom queries
+vr [<num>] :                            view results of a search
+vs :                                    view all queries
+
+   Driver/Servers:
+c [<num>] :                             connect to more servers (or to server <num>)
+rem <server numbers|all|blocked|disc> : remove server(s) ('all'/'blocked'/'disc' = all/IP blocked/disconnected servers)
+server_banner <num> :                   print banner of connected server <num>
+server_shares <num> :                   show list of files published on server <num>
+vm :                                    list connected servers
+vma :                                   list all known servers
+x <server numbers|all> :                disconnect from server(s)
+
+   Driver/Sharing:
+debug_dir debug command (example: disk .)
+debug_disk debug command (example: disk .)
+debug_fileinfo debug command (example: file .)
+debug_rlimit debug command
+links [downloading|shared|empty for all]: list links of shared files
+reshare :                               check shared files for removal
+share <priority> <dir> [<strategy>] :   share directory <dir> with <priority> [and sharing strategy <strategy>]
+shares :                                print shared directories
+unshare <dir> :                         unshare directory <dir>
+uploaders :                             show users currently uploading
+upstats :                               statistics on upload
+
+   Driver/Users:
+   Driver/Users:
+chgrp <group> <num> :                   change group of download <num> to <group>, use group = none for private file
+chown <user> <num> :                    change owner of download <num> to <user>
+dgroup :                                print default group of logged-in user
+groupadd <group> <admin: true|false> :  add new mldonkey group
+groupadmin <group> <true|false> :       change group admin status
+groupdel <group> :                      remove an unused mldonkey group
+groups :                                print groups of logged-in user
+passwd <passwd> :                       change own password
+useradd <user> <passwd> [<group>] [<commit_dir>] [<mail>] [<max_downloads>]: add new mldonkey user/change user password
+usercommit <user> <dir> :               change user specific commit directory
+userdel <user> :                        remove a mldonkey user
+userdgroup <user> <group|None> :        change user default group
+userdls <user> <num> :                  change number of allowed concurrent downloads
+usergroupadd <user> <group> :           add a group to a mldonkey user
+usergroupdel <user> <group> :           remove a group from a mldonkey user
+usermail <user> <mail> :                change user mail address
+users :                                 print users
+whoami :                                print logged-in user name
+
+   Driver/Xpert:
+ansi :                                  toggle ansi terminal (devel)
+block_list :                            display the list of blocked IP ranges that were hit
+block_test <ip> :                       check whether an IP is blocked
+clear_debug :                           clear the table of clients being debugged
+clear_log :                             clear log_file
+close_all_sockets :                     close all opened sockets
+close_fds :                             close all files (use to free space on disk after remove)
+close_log :                             close logging to file
+debug_client <client nums> :            debug message in communications with these clients
+debug_file <client nums> :              debug file state
+debug_get_download_prio :                                       get file block priorities for a file, and show subfile completion status
+debug_pictures :                        for debugging only
+debug_socks :                           for debugging only
+debug_upnp :                                    $debugging upnp
+                                        for example: "add 4662 4662 1 ed_port" add port forwarding intPort extPort isTcp notes
+                                        "remove 4662 4662 1 ed_port" remove port forwarding intPort extPort isTcp notes
+                                        "clear" clear all port forwarding
+                                        "show" show all port forwarding info
+html_mods :                             toggle html_mods
+html_mods_style :                       select html_mods_style <#>
+html_theme <theme> :                    select html_theme
+log :                                   dump current log state to console
+mem_stats :                             print memory stats [<verbosity #num>]
+merge <num1> <num2> :                   try to swarm downloads from file <num2> (secondary) to file <num1> (primary)
+open_log :                              enable logging to file
+reload_messages :                       reload messages file
+rss :                                   print RSS feeds
+set_subfile_prio set_subfile_prio <download id> <prio> <1st subfile (0-based)> <optional last subfile>
+stdout <true|false> :                   reactivate log to stdout
+term <width> <height> :                 set terminal width and height (devel)
+use_poll <bool> :                       use poll instead of select
+
+   Network/Bittorrent:
+client_stats_bt :                       show breakdown of download/upload by clients brand
+compute_torrent <filename> [<comment>] :        generate the corresponding <filename> .torrent file with <comment>.
+                                                The file is automatically tracked if tracker is enabled and seeded if located in incoming/
+csbt :                                  show table of download/upload by BT clients brand
+print_torrent <num> :                   show internal data of .torrent file
+reshare_torrents :                      recheck torrents/* directories for changes
+rm_old_torrents :                       remove all old .torrent files
+seeded_torrents :                       print all seeded .torrent files on this server (output: name, total upload, session upload, session download)
+startbt <url|file> :                    start BT download
+stop_all_bt :                           stops all bittorrent downloads, use this if you want to make sure that the stop signal actually
+                                        gets to the tracker when shutting mlnet down, but you have to wait till the stops get to the
+                                        tracker and not wait too long, so mldonkey reconnects to the tracker :)
+torrents :                              print all .torrent files on this server
+tracker <num> <url> <url>... :          add URLs as trackers for num
+
+   Network/Donkey:
+client_stats :                          show breakdown of download/upload by clients brand
+cs :                                    show table of download/upload by ED2K clients brand
+csm :                                   show table of download/upload by eMule MODs
+dump_reliability :                      display the reliability of sources
+reset_stats :                           reset session statistics
+
+   Network/Edonkey:
+afr <ip> [<port>] :                     add a friend
+bp <port1> <port2> ... :                add these ports to the port black list
+bs <range1> <range2> ... :              add these IPs to the servers black list (can be single IPs, CIDR ranges or begin-end ranges)
+clh :                                   clear local history
+dd <size> <md4> :                       download from size and md4
+id :                                    print ID on connected servers
+import <dirname> :                      import the config from dirname
+import_temp <temp_dir> :                import the old edonkey temp directory
+n <ip> [<port>] :                       add a server
+port <port> :                           change connection port
+preferred <true|false> <ip> :           set the server with this IP as preferred
+recover_bytes <f1> <f2> ... :           try to recover these files at byte level
+remove_old_servers :                    remove servers that have not been connected for several days
+reset_md4 :                             reset client_md4/client_private_key to random values
+scan_temp :                             print temp directory content
+servers <filename|URL> :                add the servers from a server.met file or URL
+sources :                               show sources currently known
+xs :                                    extend the last search
+
+   Network/FileTP:
+http <url> <referer> :                  start downloading this URL
+mirror <num> <url> <referer> :          add URL as mirror for num
+
+   Network/Overnet:
+kad_boot <ip> <port> :                  add an Kademlia peer
+kad_boots :                             print boot peers
+kad_buckets :                           print buckets table status
+kad_dump_bucket <bucket_nr> :           dumps a bucket (Devel)
+kad_dump_known_peers :                  dumps known_peers (Devel)
+kad_dump_searches <bucket_nr> :         dumps a search (Devel)
+kad_link <fhalink> :                    download fha:// link
+kad_load <filename> :                   load the peers from a contact.dat file
+kad_md4 :                               get client MD4 address on the Overnet/Kademlia network
+kad_send_udp :                          send UDP message (<ip> <port> <msg in hex>)
+kad_stats :                             Kademlia stats
+kad_store :                             dump the Kademlia File Store
+kad_view_stats_cmds :                   Kademlia stats commands
+kad_web <urls> :                        download .ocl URLs (no arg load default)
+ov_boot <ip> <port> :                   add an Overnet peer
+ov_boots :                              print boot peers
+ov_buckets :                            print buckets table status
+ov_dump_bucket <bucket_nr> :            dumps a bucket (Devel)
+ov_dump_known_peers :                   dumps known_peers (Devel)
+ov_dump_searches <bucket_nr> :          dumps a search (Devel)
+ov_link <fhalink> :                     download fha:// link
+ov_load <filename> :                    load the peers from a contact.dat file
+ov_md4 :                                get client MD4 address on the Overnet/Kademlia network
+ov_send_udp :                           send UDP message (<ip> <port> <msg in hex>)
+ov_stats :                              Overnet stats
+ov_store :                              dump the Overnet File Store
+ov_view_stats_cmds :                    Overnet stats commands
+ov_web <urls> :                         download .ocl URLs (no arg load default)
+
+
