@@ -1,0 +1,111 @@
+# ========================
+# ========================
+# ------------------------
+GithubPages_Hexo.txt
+
+# ------------------------
+# reference :
+#   https://www.cnblogs.com/MJyaaatou/p/9355648.html
+
+
+# ------------------------
+# open windows cmd
+
+# ------------------------
+# init hexo
+npm install hexo -g
+
+hexo -v
+
+# ------------------------
+# solve issue : ERROR Deployer not found: git
+npm install hexo-deployer-git --save
+
+# ------------------------
+# init blog folder
+mkdir strongzhu_blog
+cd    strongzhu_blog
+
+# ------------------------
+# init, will created some folder/files
+hexo init
+
+# ------------------------
+# install admin plugin
+npm install --save hexo-admin
+
+
+# ------------------------
+# start server :  http://localhost:4000
+#                 http://localhost:4000/admin/    for admin
+hexo s
+hexo server
+
+# ------------------------
+# generate/clean static files, in 'public' folder
+hexo g
+hexo generate
+
+hexo clean
+
+
+# ------------------------
+hexo new 'postName'
+hexo new page 'pageName'
+
+# ------------------------
+# deploy
+
+# update _config.yml
+
+      # Deployment
+      ## Docs: https://hexo.io/docs/deployment.html
+      deploy:
+        type: git
+        # repo: strongzhu@github.com:StrongZhu/strongzhu.github.io.git
+        repo: https://github.com/StrongZhu/strongzhu.github.io.git
+        branch: master
+
+# ------------------------
+# deploy to remote server, platform like github, heroku
+hexo d
+hexo deploy
+
+# generate + deploy
+hexo d -g
+
+
+# ------------------------
+# visit webpage
+https://strongzhu.github.io/
+
+# ------------------------
+# change theme, e.g. download theme 'next', will save to 'themes/next'
+git clone git@github.com:theme-next/hexo-theme-next.git themes/next
+
+
+git clone https://github.com/yanm1ng/hexo-theme-vexo.git themes/vexo
+
+
+# change '_config.yml', find 'theme'
+
+# check 
+# Extensions
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+
+# ------------------------
+# get icon : https://www.iconfinder.com/iconsets/packyuuyake
+
+
+# ------------------------
+# typical procedure:
+hexo new 'postName'           # new post
+hexo new page 'pageName'      # new page
+hexo s                        # start server visit locally
+hexo clean                    # clean old 'public'
+hexo d -g                     # generate 'public' and deploy
+hexo g
+hexo d
+
+
