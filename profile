@@ -313,5 +313,5 @@ alias get.group.of.user="id -nG"
 alias get.user.of.group="getent group"
 
 # show usage of 'add user to group'
-alias add.user.to.grpu="echo 'sudo    usermod -G GROUP_NAME -a  USER_NAME' "
+alias add.user.to.group="echo 'sudo    usermod -G GROUP_NAME -a  USER_NAME' "
 

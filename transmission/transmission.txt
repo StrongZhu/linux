@@ -1,0 +1,49 @@
+
+# reference :
+#   https://blog.csdn.net/CrazyBusby/article/details/81609023
+#   https://wiki.archlinux.org/index.php/Transmission
+
+# ------------------------
+# install
+sudo apt-get install transmission-daemon
+
+# will be installed as service
+sudo    systemctl     restart        transmission-daemon
+sudo    systemctl     start          transmission-daemon
+sudo    systemctl     stop           transmission-daemon
+sudo    systemctl     status         transmission-daemon
+
+
+# ------------------------
+# add pi to group
+sudo usermod -a -G pi debian-transmission
+
+# ------------------------
+# modify config file
+sudo cp /etc/transmission-daemon/settings.json /etc/transmission-daemon/settings.ori.json
+sudo vim /etc/transmission-daemon/settings.json
+
+# change
+#    "download-dir": "/media/pi/Two_T_632/transmission-daemon/DONE/",
+#    "incomplete-dir": "/media/pi/Two_T_632/transmission-daemon/temp/",
+#    "incomplete-dir-enabled": true,
+#
+#       make sure these dirs have '777' permission
+#
+#
+#    "rpc-whitelist": "127.0.0.1,192.168.0.*",
+#
+#       so people from other IP can access webpage
+
+# ------------------------
+# restart service
+
+# ------------------------
+# open webpage, user/password : transmission
+http://localhost:9091
+http://pi4:9091
+
+# ------------------------
+# user/password : transmission
+
+
