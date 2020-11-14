@@ -1,0 +1,33 @@
+REM --------------------------------------
+REM open cmd.exe, as administrator
+
+REM --------------------------------------
+REM delete
+sc delete MySQL80
+    REM   console output  :   [SC] DeleteService SUCCESS
+
+REM --------------------------------------
+REM create
+sc.exe create MySQL80 binpath= "\"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe\" --defaults-file=\"d:\MySQL\MySQL Server 8.0\my.ini\"  "
+
+    REM   console output  :   [SC] CreateService SUCCESS
+
+REM NOTES
+REM  binpath=<HERE_IS_A_BLANK_SPACE>
+REM  use    \"    for   "   in command line
+REM         ~~          ~
+
+REM --------------------------------------
+REM reference
+REM     http://dotnetlearners.com/windowsservice/installing-windows-service-using-sc-exe-in-windows-command-prompt
+REM     https://stackoverflow.com/questions/3663331/when-creating-a-service-with-sc-exe-how-to-pass-in-context-parameters
+REM     Also if you need to pass extra parameters in the binPath that require quotes they have to be escaped (\") 
+REM     example: if the path was c:\some long path\some.exe "first argument" 
+REM     it would need to be binPath= "\"c:\some long path\some.exe\" \"first argument\"" – Lankymart Jul 16 '15 at 13:38 
+
+
+REM --------------------------------------
+REM BUT, the process is started by account 'SYSTEM'. it may have NO permission to access fodlers
+REM How to solve it ?????
+
+
