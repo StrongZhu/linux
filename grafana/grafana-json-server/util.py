@@ -68,7 +68,7 @@ def Log(_s, _logToFileOnly=False, call_by_Log=True):
   # -------------------
   # log to console
   if not _logToFileOnly:
-    print s2
+    print(s2)
     pass
   pass
 
