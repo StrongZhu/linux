@@ -1,0 +1,11 @@
+
+# solve issue : 'Cannot currently show the desktop'
+# reference : https://shumeipai.nxez.com/2018/08/31/raspberry-pi-vnc-viewer-configuration-tutorial.html
+# https://www.twblogs.net/a/5d4b3b75bd9eee5327fc11e1/?lang=zh-cn
+
+
+sudo raspi-config
+
+# enable VNC server
+# set resolution to 1920x1080
+
